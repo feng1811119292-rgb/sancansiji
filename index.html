@@ -395,6 +395,10 @@
   .switch.on { background: #E07B39; }
   .switch.on::after { left: 23px; }
 
+  /* 数据备份 */
+  .backup-card { display: flex; gap: 10px; }
+  .backup-card .btn { flex: 1; padding: 12px 6px; font-size: 14px; }
+
   /* 菜卡编辑按钮 */
   .dish { position: relative; }
   .edit-btn {
@@ -591,6 +595,11 @@
         <button class="switch" id="switchShare" role="switch"></button>
       </div>
     </div>
+    <div class="mine-sec">数据备份</div>
+    <div class="backup-card">
+      <button class="btn btn-primary" id="btnExport" style="flex:1;">导出全部备份</button>
+      <button class="btn btn-ghost" id="btnImport" style="flex:1;">导入备份文件</button>
+    </div>
     <div class="mine-sec">用户列表 · 点击切换 · 长按删除</div>
     <div id="userList"></div>
     <button class="fab" id="btnNewUser">＋<br><span class="fab-t">新建用户</span></button>
@@ -598,6 +607,7 @@
 
   <!-- 底部导航 -->
   <input type="file" id="inpCatBg" accept="image/*" style="display:none;">
+  <input type="file" id="inpImport" accept=".json,application/json" style="display:none;">
   <div class="tabbar" id="tabbar">
     <button class="tab active" data-view="home"><span class="tname">首页</span></button>
     <button class="tab" data-view="records"><span class="tname">点菜记录</span></button>
@@ -1585,6 +1595,95 @@
     persist(); sfxClick();
     toast(currentUser.allowShare ? '已开启：其他人可以查看你的记录' : '已关闭：其他人无法查看你的记录');
     renderMine();
+  });
+
+  /* ---------- 数据备份 ---------- */
+  function exportBackup() {
+    var data = {
+      app: 'sancansiji', ver: 1, exportedAt: new Date().toISOString(),
+      cats: cats, catBgs: catBgs, tags: tags, dishes: dishes, records: records, users: users,
+      soundOn: soundOn, viewMode: viewMode,
+      currentUserId: currentUser ? currentUser.id : null
+    };
+    var json = JSON.stringify(data);
+    var d = new Date();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var filename = '三餐四季备份_' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '.json';
+    var box = $('modalBox');
+    box.innerHTML =
+      '<div class="mtitle" style="font-size:17px;">导出备份</div>' +
+      '<div class="msub">备份包含全部菜品、标签、用户、身体记录、点菜记录与设置。选择导出方式：</div>' +
+      '<div class="mrow" style="margin-top:14px;"><button class="btn btn-primary" id="expShare" style="flex:1;">分享 / 保存到文件</button></div>' +
+      '<div class="mrow"><button class="btn btn-ghost" id="expDl" style="flex:1;">下载到本机</button></div>' +
+      '<div class="mrow"><button class="btn btn-ghost" id="expCancel" style="flex:1;">取消</button></div>';
+    showOverlay();
+    $('expShare').addEventListener('click', function () {
+      try {
+        var f = new File([json], filename, { type: 'application/json' });
+        if (navigator.canShare && navigator.share && navigator.canShare({ files: [f] })) {
+          hideOverlay();
+          navigator.share({ files: [f], title: '三餐四季备份', text: '三餐四季数据备份' }).then(function () {
+            sfxClick(); toast('备份已导出');
+          }).catch(function (e) {
+            if (e && e.name === 'AbortError') { sfxClick(); toast('已取消分享'); }
+          });
+        } else {
+          toast('当前浏览器不支持系统分享，请用「下载到本机」');
+        }
+      } catch (e) { toast('分享失败，请用「下载到本机」'); }
+    });
+    $('expDl').addEventListener('click', function () {
+      hideOverlay();
+      var blob = new Blob([json], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 600);
+      sfxClick();
+      toast('已下载，可在浏览器下载记录里找到');
+    });
+    $('expCancel').addEventListener('click', hideOverlay);
+  }
+  function doImport(d) {
+    var data = d && d.data ? d.data : d;
+    cats = (data.cats && Array.isArray(data.cats) && data.cats.length) ? data.cats.slice() : DEFAULT_CATS.slice();
+    tags = Array.isArray(data.tags) ? data.tags.slice() : [];
+    dishes = Array.isArray(data.dishes) ? data.dishes.slice() : [];
+    records = Array.isArray(data.records) ? data.records.slice() : [];
+    users = (Array.isArray(data.users) && data.users.length) ? data.users.slice() : [{ id: 'u_default', name: '我', avatar: '', ts: Date.now() }];
+    catBgs = (data.catBgs && typeof data.catBgs === 'object') ? data.catBgs : {};
+    if (typeof data.soundOn === 'boolean') soundOn = data.soundOn;
+    if (['large', 'medium', 'small', 'list'].indexOf(data.viewMode) >= 0) viewMode = data.viewMode;
+    currentUser = users[0];
+    if (data.currentUserId) {
+      for (var ui = 0; ui < users.length; ui++) {
+        if (users[ui].id === data.currentUserId) { currentUser = users[ui]; break; }
+      }
+    }
+    persist();
+    location.reload();
+  }
+  $('btnExport').addEventListener('click', exportBackup);
+  $('btnImport').addEventListener('click', function () { $('inpImport').click(); });
+  $('inpImport').addEventListener('change', function () {
+    var file = this.files && this.files[0];
+    this.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var obj = null;
+      try { obj = JSON.parse(reader.result); } catch (e) { obj = null; }
+      var data = obj && obj.data ? obj.data : obj;
+      if (!data || !Array.isArray(data.cats) || !Array.isArray(data.dishes) || !Array.isArray(data.users)) {
+        toast('备份文件格式不正确，请选择三餐四季导出的 json 文件');
+        return;
+      }
+      showConfirm('导入会覆盖当前所有数据，确定继续吗？', function () {
+        doImport(obj);
+      });
+    };
+    reader.readAsText(file);
   });
   var tabs = document.querySelectorAll('.tab');
   for (var i = 0; i < tabs.length; i++) {
