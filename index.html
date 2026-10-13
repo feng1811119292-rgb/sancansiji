@@ -783,7 +783,7 @@
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
-  var APP_VERSION = 'v1.0';
+  var APP_VERSION = 'v1.1';
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
   var customFoods = {};
@@ -2288,7 +2288,7 @@
   }
   function ghApi(url, method, body) {
     var ctrl = ('AbortController' in window) ? new AbortController() : null;
-    var timer = ctrl ? setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, 15000) : null;
+    var timer = ctrl ? setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, 10000) : null;
     var opts = {
       method: method || 'GET',
       headers: {
@@ -2396,12 +2396,12 @@
     if (autoPushTimer) clearTimeout(autoPushTimer);
     autoPushTimer = setTimeout(function () { pushToCloud(false); }, 3000);
   }
-  function pushToCloud(manual) {
+  function pushToCloud(manual, force) {
     if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
       if (manual) toast('请先完成同步设置');
       return Promise.resolve();
     }
-    if (syncBusy) return Promise.resolve();
+    if (syncBusy && !force) return Promise.resolve();
     syncBusy = true;
     var payload = buildPayload();
     payload.updatedAt = Date.now();
@@ -2450,11 +2450,15 @@
     }).then(function () { syncBusy = false; });
   }
   function autoSync() {
-    if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token || syncBusy) return;
+    if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token) return;
+    if (syncBusy) { toast('正在同步中，请稍候'); return; }
     syncBusy = true;
+    var st = $('syncStatus');
+    if (st) st.textContent = '正在同步中…';
     ghGetFile().then(function (f) {
       if (!f) {
-        if (syncCfg.dirty) return pushToCloud(false);
+        if (syncCfg.dirty) return pushToCloud(false, true);
+        if (st) st.textContent = '已是最新，云端无变化';
         return null;
       }
       var cloud = null;
@@ -2480,10 +2484,12 @@
         setTimeout(function () { location.reload(); }, 800);
         return null;
       }
-      if (syncCfg.dirty) return pushToCloud(false);
+      if (syncCfg.dirty) return pushToCloud(false, true);
+      if (st) st.textContent = '已是最新';
       return null;
     }).catch(function (err) {
       toast('同步失败：' + err.message);
+      if (st) st.textContent = '同步失败：' + err.message;
     }).then(function () { syncBusy = false; });
   }
   function queueToast(msg) {
@@ -3137,7 +3143,15 @@
       if (syncCfg.on) setTimeout(autoSync, 400);
     });
     $('btnSyncNow').addEventListener('click', function () {
-      if (!syncCfg || !syncCfg.on) { toast('请先开启云端同步'); return; }
+      if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
+      var o = ($('syncOwner').value || '').trim(), r = ($('syncRepo').value || '').trim(), t = ($('syncToken').value || '').trim();
+      if (o) syncCfg.owner = o;
+      if (r) syncCfg.repo = r;
+      if (t) syncCfg.token = t;
+      if (!syncCfg.owner || !syncCfg.repo || !syncCfg.token) { toast('请先填写 GitHub 用户名、仓库名和访问令牌'); return; }
+      if (!syncCfg.on) { toast('请先开启云端同步（打开上面的开关）'); return; }
+      saveSyncCfg();
+      toast('开始同步…');
       autoSync();
     });
     $('btnExport').addEventListener('click', exportBackup);
