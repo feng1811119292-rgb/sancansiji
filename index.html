@@ -347,6 +347,7 @@
   .pill-row { display: flex; gap: 10px; margin: 2px 0 16px; }
   .pill-btn { flex: 1; padding: 11px 0; border-radius: 999px; border: 1px solid rgba(224,123,57,0.35); background: rgba(224,123,57,0.08); color: #C2501B; font-size: 14px; font-weight: 600; text-align: center; -webkit-tap-highlight-color: transparent; }
   .pill-btn:active { background: rgba(224,123,57,0.18); }
+  .ver { font-size: 11px; color: #B9BCBF; text-align: center; margin: 16px 0 6px; }
   .mine-sec { font-size: 13px; color: #8A8F98; margin: 18px 2px 8px; font-weight: 600; }
   .urow { display: flex; align-items: center; gap: 12px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; padding: 12px 74px 12px 12px; margin-bottom: 10px; }
   .urow.on { border-color: rgba(224,123,57,0.45); background: rgba(224,123,57,0.04); }
@@ -733,6 +734,7 @@
       <button class="pill-btn" id="btnSettings">⚙ 设置</button>
       <button class="pill-btn" id="btnInviteCenter">📩 点菜邀请</button>
     </div>
+    <div class="ver" id="verText"></div>
     <button class="fab" id="btnNewUser">＋<br><span class="fab-t">新建用户</span></button>
   </div>
 
@@ -781,6 +783,7 @@
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
+  var APP_VERSION = 'v1.0';
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
   var customFoods = {};
@@ -2284,7 +2287,9 @@
     return new TextDecoder().decode(bytes);
   }
   function ghApi(url, method, body) {
-    return fetch(url, {
+    var ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, 15000) : null;
+    var opts = {
       method: method || 'GET',
       headers: {
         'Authorization': 'Bearer ' + syncCfg.token,
@@ -2292,10 +2297,15 @@
         'Content-Type': 'application/json'
       },
       body: body ? JSON.stringify(body) : undefined
-    }).then(function (r) {
+    };
+    if (ctrl) opts.signal = ctrl.signal;
+    return fetch(url, opts).then(function (r) {
+      if (timer) clearTimeout(timer);
       return r.json().then(function (j) { return { ok: r.ok, status: r.status, json: j }; });
-    }).catch(function () {
-      return { ok: false, status: 0, json: null };
+    }).catch(function (e) {
+      if (timer) clearTimeout(timer);
+      var msg = /abort/i.test(String(e && e.name)) ? '连接云端超时，请检查网络后稍后重试' : '无法连接云端（' + ((e && e.message) || '网络错误') + '）';
+      throw new Error(msg);
     });
   }
   function ghRepoUrl() {
@@ -3010,6 +3020,8 @@
   var newAvatar = null, editAvatar = null, avatarMode = null;
   function renderMine() {
     if (!currentUser) return;
+    var vt = $('verText');
+    if (vt) vt.textContent = '三餐四季 ' + APP_VERSION;
     var sw = $('switchShare');
     if (sw) sw.classList.toggle('on', currentUser.allowShare !== false);
     var cu = currentUser;
