@@ -815,14 +815,17 @@
   var SYNC_KEY = 'sanCanSiJi_sync_v1';
   var INVITES_KEY = 'sanCanSiJi_invites_v1';
   var SYNC_FILE = 'sancansiji-sync.json';
+  var MEDIA_FILE = 'sancansiji-media.json';
+  var MEDIA_KEY = 'sanCanSiJi_media_v1';
   var DEFAULT_CATS = ['碳水类', '蛋白类', '蔬菜类', '汤羹类', '其他'];
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
-  var APP_VERSION = 'v1.5';
+  var APP_VERSION = 'v1.7';
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
   var customFoods = {};
+  var mediaCache = {};
   var curCat = null, selectedId = null, editingPhoto = null, nextView = null, editTags = [];
   var syncCfg = null, invites = [], pendingSendTo = null, syncBusy = false, syncApplying = false;
 
@@ -1019,9 +1022,10 @@
       try { customFoods = JSON.parse(localStorage.getItem(CUSTOMFOODS_KEY)) || {}; } catch (e) { customFoods = {}; }
       try { syncCfg = JSON.parse(localStorage.getItem(SYNC_KEY)) || null; } catch (e) { syncCfg = null; }
       try { invites = JSON.parse(localStorage.getItem(INVITES_KEY)) || []; } catch (e) { invites = []; }
+      try { mediaCache = JSON.parse(localStorage.getItem(MEDIA_KEY)) || {}; } catch (e) { mediaCache = {}; }
     } catch (e) {
       cats = null; tags = []; dishes = []; records = []; users = [];
-      catBgs = {};
+      catBgs = {}; mediaCache = {};
     }
     if (!cats || !Array.isArray(cats) || cats.length === 0) cats = DEFAULT_CATS.slice();
     if (!Array.isArray(tags)) tags = [];
@@ -1063,6 +1067,7 @@
     var so = null;
     try { so = localStorage.getItem(SOUND_KEY); } catch (e) { so = null; }
     soundOn = so !== 'off';
+    backfillMedia();
   }
   function persist() {
     try {
@@ -1074,6 +1079,7 @@
       localStorage.setItem(CATBGS_KEY, JSON.stringify(catBgs));
       localStorage.setItem(CUSTOMFOODS_KEY, JSON.stringify(customFoods));
       localStorage.setItem(INVITES_KEY, JSON.stringify(invites));
+      collectMedia();
       if (currentUser) localStorage.setItem(CURRENTUSER_KEY, currentUser.id);
       trackSyncDirty();
       return true;
@@ -1083,6 +1089,34 @@
     }
   }
 
+  /* 媒体同步辅助：把本机图片收集进 mediaCache（本地缓存），供云端媒体文件同步 */
+  function collectMedia() {
+    dishes.forEach(function (d) { if (d && d.id && d.photo) mediaCache['d' + d.id] = d.photo; });
+    users.forEach(function (u) { if (u && u.id && u.avatar) mediaCache['u' + u.id] = u.avatar; });
+    for (var k in catBgs) mediaCache['c' + k] = catBgs[k];
+    try { localStorage.setItem(MEDIA_KEY, JSON.stringify(mediaCache)); } catch (e) {}
+  }
+  /* 媒体指纹：所有图片的 键+长度 摘要，用于判断媒体文件是否需要重新同步 */
+  function mediaSig() {
+    var keys = [];
+    for (var k in mediaCache) keys.push(k);
+    keys.sort();
+    var s = '';
+    for (var i = 0; i < keys.length; i++) s += keys[i] + ':' + String(mediaCache[keys[i]]).length + ';';
+    return s;
+  }
+  /* 拉取云端后：给没有图片的菜/用户/分类背景从媒体缓存补上图片（只补内存，不写回本地存储，避免触发重复上传） */
+  function backfillMedia() {
+    dishes.forEach(function (d) {
+      if (d && d.id && !d.photo && mediaCache['d' + d.id]) d.photo = mediaCache['d' + d.id];
+    });
+    users.forEach(function (u) {
+      if (u && u.id && !u.avatar && mediaCache['u' + u.id]) u.avatar = mediaCache['u' + u.id];
+    });
+    for (var k in catBgs) {
+      if (!catBgs[k] && mediaCache['c' + k]) catBgs[k] = mediaCache['c' + k];
+    }
+  }
   function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   }
@@ -1999,7 +2033,7 @@
     var rlp = $('recipeLockedTip');
     if (rw) rw.style.display = '';
     if (rlp) rlp.style.display = 'none';
-    $('photoBox').innerHTML = '<div style="text-align:center;line-height:1.9;">点击添加照片<br><span style="font-size:12px;">可从相册选或拍照</span></div>';
+    $('photoBox').innerHTML = '<div style="text-align:center;line-height:1.9;">点击添加照片（选填，可之后补）<br><span style="font-size:12px;">可从相册选或拍照</span></div>';
     $('addTitle').textContent = '添加新菜';
     $('btnCancelEdit').style.display = 'none';
     $('btnSave').textContent = '保存这道菜';
@@ -2308,7 +2342,7 @@
         if (eb) eb.innerHTML = data ? '<img class="avatar" src="' + data + '" alt="">' : '＋';
       } else {
         editingPhoto = data;
-        $('photoBox').innerHTML = data ? '<img src="' + data + '" alt="">' : '<div style="text-align:center;line-height:1.9;">点击添加照片<br><span style="font-size:12px;">可从相册选或拍照</span></div>';
+        $('photoBox').innerHTML = data ? '<img src="' + data + '" alt="">' : '<div style="text-align:center;line-height:1.9;">点击添加照片（选填，可之后补）<br><span style="font-size:12px;">可从相册选或拍照</span></div>';
       }
     });
     this.value = '';
@@ -2334,7 +2368,6 @@
     var name = $('inpName').value.trim();
     var cat = $('selCat').value || cats[0];
     if (!name) { toast('请先填写菜名'); return; }
-    if (!editingPhoto) { toast('请先添加一张照片'); return; }
     var recipe = { steps: $('inpRecipe').value.trim(), items: collectIngRows() };
     if (editDishId) {
       var d = dishes.filter(function (x) { return x.id === editDishId; })[0];
@@ -2466,7 +2499,7 @@
       syncCfg.conflict = false;
       saveSyncCfg();
       toast('云端同步已开启');
-      setTimeout(autoSync, 600);
+      setTimeout(function () { autoSync(true); }, 600);
       return true;
     } else {
       if (syncCfg) { syncCfg.on = false; saveSyncCfg(); }
@@ -2513,21 +2546,21 @@
   function ghRepoUrl() {
     return 'https://api.github.com/repos/' + encodeURIComponent(syncCfg.owner) + '/' + encodeURIComponent(syncCfg.repo);
   }
-  function ghGetFile() {
-    return ghApi(ghRepoUrl() + '/contents/' + SYNC_FILE).then(function (res) {
+  function ghGetFile(fname) {
+    return ghApi(ghRepoUrl() + '/contents/' + (fname || SYNC_FILE)).then(function (res) {
       if (res.status === 404) return null;
       if (!res.ok) throw new Error('读取云端失败(' + res.status + ') ' + ((res.json && res.json.message) || ''));
       return { content: b64Decode(res.json.content), sha: res.json.sha };
     });
   }
-  function ghPutFile(content, sha, tries) {
+  function ghPutFile(content, sha, tries, fname) {
     var body = { message: '三餐四季同步 ' + new Date().toLocaleString(), content: b64Encode(content) };
     if (sha) body.sha = sha;
-    return ghApi(ghRepoUrl() + '/contents/' + SYNC_FILE, 'PUT', body).then(function (res) {
+    return ghApi(ghRepoUrl() + '/contents/' + (fname || SYNC_FILE), 'PUT', body).then(function (res) {
       if (res.status === 422 && sha && (tries || 0) < 2) {
-        return ghGetFile().then(function (f) {
-          if (!f) return ghPutFile(content, undefined, (tries || 0) + 1);
-          return ghPutFile(content, f.sha, (tries || 0) + 1);
+        return ghGetFile(fname).then(function (f) {
+          if (!f) return ghPutFile(content, undefined, (tries || 0) + 1, fname);
+          return ghPutFile(content, f.sha, (tries || 0) + 1, fname);
         });
       }
       if (!res.ok) throw new Error('上传云端失败(' + res.status + ') ' + ((res.json && res.json.message) || ''));
@@ -2536,10 +2569,16 @@
   }
   function buildPayload() {
     return {
-      v: 2, updatedAt: Date.now(),
-      cats: cats, catBgs: catBgs, tags: tags, dishes: dishes,
-      users: users.map(function (u) { return { id: u.id, name: u.name, avatar: u.avatar || '', ts: u.ts || 0 }; }),
-      records: records, customFoods: customFoods, invites: invites
+      v: 3, updatedAt: Date.now(),
+      cats: cats, catBgs: {}, tags: tags,
+      dishes: dishes.map(function (d) {
+        var o = {};
+        for (var k in d) if (k !== 'photo') o[k] = d[k];
+        return o;
+      }),
+      users: users.map(function (u) { return { id: u.id, name: u.name, ts: u.ts || 0 }; }),
+      records: records, customFoods: customFoods, invites: invites,
+      mediaSig: mediaSig()
     };
   }
   function mergeUsers(cloudUsers) {
@@ -2572,7 +2611,12 @@
       if (Array.isArray(p.cats)) cats = p.cats;
       if (p.catBgs && typeof p.catBgs === 'object') catBgs = p.catBgs;
       if (Array.isArray(p.tags)) tags = p.tags;
-      if (Array.isArray(p.dishes)) dishes = p.dishes;
+      if (Array.isArray(p.dishes)) {
+        var imgMap = {};
+        dishes.forEach(function (d) { if (d && d.id && d.photo) imgMap[d.id] = d.photo; });
+        dishes = p.dishes;
+        dishes.forEach(function (d) { if (d && imgMap[d.id]) d.photo = imgMap[d.id]; });
+      }
       if (Array.isArray(p.records)) records = p.records;
       if (p.customFoods && typeof p.customFoods === 'object') customFoods = p.customFoods;
       if (Array.isArray(p.invites)) invites = p.invites;
@@ -2609,21 +2653,51 @@
     var payload = buildPayload();
     payload.updatedAt = Date.now();
     var content = JSON.stringify(payload);
+    var sig = mediaSig();
     return ghGetFile().then(function (f) {
       return ghPutFile(content, f ? f.sha : undefined);
     }).then(function () {
+      if (sig !== (syncCfg.lastMediaSig || '')) return pushMedia();
+      return null;
+    }).then(function () {
       syncCfg.lastPush = payload.updatedAt;
+      syncCfg.lastMediaSig = sig;
       syncCfg.dirty = false;
       syncCfg.conflict = false;
       saveSyncCfg();
       renderSync();
       if (manual) toast('已上传到云端 ✓');
     }).catch(function (err) {
-      syncCfg.conflict = true;
+      if (/422|上传云端失败/.test(err.message)) {
+        syncCfg.conflict = true;
+      }
       saveSyncCfg();
       renderSync();
       if (manual) toast('上传失败：' + err.message);
     }).then(function () { syncBusy = false; });
+  }
+  function pushMedia() {
+    var body = { media: mediaCache, updatedAt: Date.now() };
+    var content = JSON.stringify(body);
+    return ghGetFile(MEDIA_FILE).then(function (f) {
+      return ghPutFile(content, f ? f.sha : undefined, 0, MEDIA_FILE);
+    }).then(function () {
+      syncCfg.lastMediaSig = mediaSig();
+      saveSyncCfg();
+      return true;
+    });
+  }
+  function pullMedia() {
+    return ghGetFile(MEDIA_FILE).then(function (f) {
+      if (!f) return null;
+      var obj = null;
+      try { obj = JSON.parse(f.content); } catch (e) { return null; }
+      var cloud = obj && obj.media ? obj.media : null;
+      if (!cloud) return null;
+      for (var k in cloud) mediaCache[k] = cloud[k];
+      try { localStorage.setItem(MEDIA_KEY, JSON.stringify(mediaCache)); } catch (e) {}
+      return true;
+    });
   }
   function pullFromCloud() {
     if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
@@ -2636,32 +2710,38 @@
       var cloud = JSON.parse(f.content);
       showConfirm('用云端数据覆盖本机所有数据？（菜品、记录、成员等都会被替换）', function () {
         applyPayload(cloud);
-        syncCfg.lastPush = cloud.updatedAt || Date.now();
-        syncCfg.dirty = false;
-        syncCfg.conflict = false;
-        saveSyncCfg();
-        checkInviteAlerts();
-        var tips = [];
-        if (pendingIncoming().length) tips.push('收到 ' + pendingIncoming().length + ' 条点菜邀请');
-        if (tips.length) queueToast(tips.join('；'));
-        toast('已下载云端数据 ✓');
-        setTimeout(function () { location.reload(); }, 800);
+        var needMedia = String((cloud && cloud.mediaSig) || '') !== mediaSig();
+        return (needMedia ? pullMedia() : Promise.resolve()).then(function () {
+          backfillMedia();
+          syncCfg.lastPush = cloud.updatedAt || Date.now();
+          syncCfg.dirty = false;
+          syncCfg.conflict = false;
+          syncCfg.lastMediaSig = mediaSig();
+          saveSyncCfg();
+          checkInviteAlerts();
+          var tips = [];
+          if (pendingIncoming().length) tips.push('收到 ' + pendingIncoming().length + ' 条点菜邀请');
+          if (tips.length) queueToast(tips.join('；'));
+          toast('已下载云端数据 ✓');
+          renderAll();
+          if (tips.length) flushQueueToast();
+        });
       });
       return null;
     }).catch(function (err) {
       toast('下载失败：' + err.message);
     }).then(function () { syncBusy = false; });
   }
-  function autoSync() {
+  function autoSync(silent) {
     if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token) return;
-    if (syncBusy) { toast('正在同步中，请稍候'); return; }
+    if (syncBusy) return;
     syncBusy = true;
     var st = $('syncStatus');
-    if (st) st.textContent = '正在同步中…';
+    if (st && !silent) st.textContent = '正在同步中…';
     ghGetFile().then(function (f) {
       if (!f) {
-        if (syncCfg.dirty) return pushToCloud(false, true);
-        if (st) st.textContent = '已是最新，云端无变化';
+        if (syncCfg.dirty) return pushToCloud(!silent, true);
+        if (st && !silent) st.textContent = '已是最新，云端无变化';
         return null;
       }
       var cloud = null;
@@ -2672,28 +2752,47 @@
           syncCfg.conflict = true;
           saveSyncCfg();
           renderSync();
-          toast('云端有更新，且本机有未同步的修改');
+          if (!silent) toast('云端有更新，且本机有未同步的修改');
           return null;
         }
         applyPayload(cloud);
-        syncCfg.lastPush = cloudT;
-        syncCfg.dirty = false;
-        syncCfg.conflict = false;
-        saveSyncCfg();
-        checkInviteAlerts();
-        var tips = [];
-        if (pendingIncoming().length) tips.push('收到 ' + pendingIncoming().length + ' 条点菜邀请');
-        if (tips.length) queueToast(tips.join('；'));
-        setTimeout(function () { location.reload(); }, 800);
-        return null;
+        var needMedia = String((cloud && cloud.mediaSig) || '') !== mediaSig();
+        return (needMedia ? pullMedia() : Promise.resolve()).then(function () {
+          backfillMedia();
+          syncCfg.lastPush = cloudT;
+          syncCfg.dirty = false;
+          syncCfg.conflict = false;
+          syncCfg.lastMediaSig = mediaSig();
+          saveSyncCfg();
+          checkInviteAlerts();
+          var tips = [];
+          if (pendingIncoming().length) tips.push('收到 ' + pendingIncoming().length + ' 条点菜邀请');
+          if (tips.length) queueToast(tips.join('；'));
+          if (st && !silent) st.textContent = '已下载云端数据 ✓';
+          renderAll();
+          if (tips.length) flushQueueToast();
+        });
       }
-      if (syncCfg.dirty) return pushToCloud(false, true);
-      if (st) st.textContent = '已是最新';
+      if (syncCfg.dirty) return pushToCloud(!silent, true);
+      if (st && !silent) st.textContent = '已是最新';
       return null;
     }).catch(function (err) {
-      toast('同步失败：' + err.message);
-      if (st) st.textContent = '同步失败：' + err.message;
+      if (!silent) {
+        toast('同步失败：' + err.message);
+        if (st) st.textContent = '同步失败：' + err.message;
+      }
     }).then(function () { syncBusy = false; });
+  }
+  function renderAll() {
+    var active = 'home';
+    views.forEach(function (v) {
+      if ($('view-' + v).classList.contains('active')) active = v;
+    });
+    if (active === 'home') renderHome();
+    else if (active === 'records') renderRecords();
+    else if (active === 'mine') renderMine();
+    renderSync();
+    renderInviteBanner();
   }
   function queueToast(msg) {
     try { localStorage.setItem('sanCanSiJi_toast_v1', msg); } catch (e) { }
@@ -3351,7 +3450,7 @@
       var st = $('syncStatus');
       if (st) st.textContent = '已保存，点击开关即可开启同步';
       toast('同步设置已保存');
-      if (syncCfg.on) setTimeout(autoSync, 400);
+      if (syncCfg.on) setTimeout(function () { autoSync(true); }, 400);
     });
     $('btnSyncNow').addEventListener('click', function () {
       if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
@@ -3363,7 +3462,7 @@
       if (!syncCfg.on) { toast('请先开启云端同步（打开上面的开关）'); return; }
       saveSyncCfg();
       toast('开始同步…');
-      autoSync();
+      autoSync(false);
     });
     $('btnExport').addEventListener('click', exportBackup);
     $('btnImport').addEventListener('click', function () { $('inpImport').click(); });
@@ -3768,11 +3867,11 @@
   renderInviteBanner();
   checkInviteAlerts();
   flushQueueToast();
-  if (syncCfg && syncCfg.on) setTimeout(autoSync, 900);
-  /* 云端定时轮询：每 30 秒自动同步一次（拉取家人更新 + 上传本机改动），
-     即使没有任何手动操作，家人新点菜/新邀请也能在 30 秒内自动收到 */
+  if (syncCfg && syncCfg.on) setTimeout(function () { autoSync(true); }, 900);
+  /* 云端定时轮询：每 30 秒自动同步一次（静默，不弹提示），
+     家人新点菜/新邀请 30 秒内自动收到，本机改动也会自动传上去 */
   setInterval(function () {
-    if (syncCfg && syncCfg.on && !syncBusy) autoSync();
+    if (syncCfg && syncCfg.on && !syncBusy) autoSync(true);
   }, 30000);
 })();
 </script>
