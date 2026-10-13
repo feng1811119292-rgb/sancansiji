@@ -198,6 +198,79 @@
   }
   .tag-opt.on { color: #E07B39; background: rgba(224,123,57,0.12); border-color: transparent; }
   .mtag-new { display: flex; gap: 8px; margin-top: 14px; }
+
+  /* 做法与配料营养 */
+  .recipe-area {
+    width: 100%; box-sizing: border-box; background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; padding: 10px;
+    font-size: 14px; line-height: 1.6; color: #1A1B1C; resize: vertical;
+  }
+  .ing-list { display: flex; flex-direction: column; gap: 8px; }
+  .ing-btn-row { display: flex; gap: 8px; margin: 6px 0 4px; }
+  .ing-row { display: flex; gap: 8px; align-items: center; }
+  .ing-name {
+    flex: 1; min-width: 0; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 12px; padding: 10px; font-size: 14px; color: #1A1B1C;
+  }
+  .ing-name.ok { border-color: rgba(224,123,57,0.45); }
+  .ing-grams {
+    width: 74px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 12px; padding: 10px; font-size: 14px; color: #1A1B1C; text-align: right;
+  }
+  .ing-grams:focus { border-color: rgba(224,123,57,0.6); outline: none; }
+  .ing-g-label { font-size: 11px; color: #8A8F98; }
+  .ing-del {
+    width: 36px; height: 36px; border: none; background: rgba(232,102,104,0.08);
+    color: #E86668; border-radius: 10px; font-size: 16px; flex: none;
+  }
+  .nutri-hint { font-size: 12px; color: #8A8F98; margin-top: 2px; }
+  .nutri-preview { display: none; margin-top: 10px; background: #FFF7F0; border-radius: 12px; padding: 12px; }
+  .nutri-preview.show { display: block; }
+  .nutri-preview .np-t { font-size: 13px; font-weight: 700; color: #C2501B; }
+  .np-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  .np-item { font-size: 13px; color: #6B7280; }
+  .np-item b { color: #1A1B1C; }
+  .np-warn { font-size: 12px; color: #E86668; margin-top: 6px; }
+  .kcal-tag {
+    display: inline-block; font-size: 11px; font-weight: 600; color: #C2501B;
+    background: rgba(224,123,57,0.12); border-radius: 999px; padding: 2px 8px; margin-left: 6px;
+    vertical-align: middle;
+  }
+  .nutri-card { margin-top: 12px; background: #FFF7F0; border-radius: 12px; padding: 12px; }
+  .nutri-card .n-title { font-size: 12px; color: #C2501B; font-weight: 700; margin-bottom: 8px; }
+  .n-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+  .n-item { flex: 1 1 40%; min-width: 0; background: #FFFFFF; border-radius: 10px; padding: 8px 10px; }
+  .n-item .n-v { font-size: 16px; font-weight: 700; color: #1A1B1C; }
+  .n-item .n-l { font-size: 11px; color: #8A8F98; margin-top: 2px; }
+  .recipe-view { margin-top: 12px; background: #F6F5F1; border-radius: 12px; padding: 12px; }
+  .recipe-view .rv-t { font-size: 12px; color: #6B7280; font-weight: 700; margin-bottom: 6px; }
+  .recipe-view .rv-steps { font-size: 14px; line-height: 1.7; color: #1A1B1C; white-space: pre-wrap; }
+  .recipe-view .rv-items { font-size: 13px; color: #6B7280; margin-top: 8px; }
+  .priv-badge { display: inline-block; font-size: 10px; color: #8A8F98; background: rgba(0,0,0,0.05); border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+  .recipe-locked {
+    margin-top: 16px; background: #F6F5F1; border-radius: 12px; padding: 12px;
+    font-size: 13px; color: #8A8F98; line-height: 1.6;
+  }
+  .cf-new { margin-top: 10px; }
+  .cf-new input {
+    width: 100%; box-sizing: border-box; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 12px; padding: 10px; font-size: 14px; color: #1A1B1C; margin-bottom: 8px;
+  }
+  .cf-nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .cf-nums input { width: 100%; text-align: center; padding: 10px 4px; margin-bottom: 8px; }
+  .cf-list { margin-top: 6px; display: flex; flex-direction: column; gap: 8px; max-height: 30vh; overflow-y: auto; }
+  .cf-row { display: flex; gap: 6px; align-items: center; background: #F6F5F1; border-radius: 12px; padding: 8px 10px; }
+  .cf-info { flex: 1; min-width: 0; }
+  .cf-info b { font-size: 14px; color: #1A1B1C; display: block; }
+  .cf-info span { font-size: 11px; color: #8A8F98; }
+  .cf-edit {
+    width: 38px; height: 34px; border: none; background: rgba(224,123,57,0.12); color: #E07B39;
+    border-radius: 8px; font-size: 13px; flex: none;
+  }
+  .cf-del {
+    width: 34px; height: 34px; border: none; background: rgba(232,102,104,0.08); color: #E86668;
+    border-radius: 8px; font-size: 14px; flex: none;
+  }
   .mtag-new input { flex: 1; min-width: 0; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px; padding: 10px; }
   .mtag-hint { font-size: 12px; color: #8A8F98; text-align: left; margin-top: 10px; line-height: 1.6; }
   .mtag-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); text-align: left; }
@@ -248,11 +321,15 @@
   .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; margin-right: 6px; vertical-align: 1px; }
   .badge-manual { color: #3E6BC0; background: rgba(62,107,192,0.12); }
   .badge-random { color: #C2501B; background: rgba(224,123,57,0.14); }
+  .badge-meal { color: #1E8E5A; background: rgba(30,142,90,0.12); }
   .rec-item .del { flex: 0 0 36px; height: 36px; font-size: 18px; color: #B5B3AB; }
   .rec-item .note { flex: 0 0 auto; min-width: 0; }
   .rec-none { font-size: 11px; color: #B5B3AB; white-space: nowrap; }
   .rec-note-btn { font-size: 11px; font-weight: 600; color: #3E6BC0; background: rgba(62,107,192,0.10); border-radius: 8px; padding: 6px 10px; white-space: nowrap; }
+  .rec-again-btn { font-size: 11px; font-weight: 600; color: #1E8E5A; background: rgba(30,142,90,0.10); border-radius: 8px; padding: 6px 10px; white-space: nowrap; }
   .rec-item .ru { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .rec-item .ru .ru-acts { display: flex; flex-direction: column; gap: 5px; align-items: stretch; min-width: 0; }
+  .rec-item .ru .ru-acts .rec-none { text-align: center; }
   .rec-item .ru .avatar, .rec-item .ru .avatar-ph { width: 30px; height: 30px; border-radius: 50%; font-size: 13px; }
   .rec-item .ru .nick { font-size: 10px; color: #8A8F98; max-width: 52px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .avatar-ph {
@@ -360,6 +437,44 @@
   .stat { flex: 1; min-width: 0; text-align: center; }
   .stat .v { font-size: 15px; font-weight: 700; color: #E07B39; word-break: break-all; }
   .stat .k { font-size: 11px; color: #8A8F98; margin-top: 3px; }
+  .today-bar {
+    font-size: 13px; color: #6B7280; background: rgba(224,123,57,0.07);
+    border: 1px solid rgba(224,123,57,0.14); border-radius: 12px;
+    padding: 9px 12px; margin-bottom: 12px; text-align: center;
+  }
+  .today-bar b { color: #C2501B; font-weight: 700; }
+  .meal-row { display: flex; gap: 8px; margin-top: 14px; }
+  .meal-chip {
+    flex: 1; font-size: 13px; font-weight: 600; padding: 10px 0; border-radius: 10px;
+    background: #F3F2EE; color: #6B7280; border: none; cursor: pointer;
+  }
+  .meal-chip.on { background: rgba(224,123,57,0.15); color: #C2501B; }
+  #sendRow { flex-wrap: wrap; }
+  #sendRow .meal-chip { flex: 1 1 auto; padding: 8px 6px; font-size: 12px; }
+  .invite-banner {
+    display: flex; align-items: center; gap: 8px; margin: 12px 0;
+    background: linear-gradient(135deg, rgba(224,123,57,0.12), rgba(224,123,57,0.07));
+    border: 1px solid rgba(224,123,57,0.25); border-radius: 14px; padding: 12px 14px;
+    font-size: 14px; font-weight: 600; color: #C2501B; cursor: pointer;
+  }
+  .invite-banner .ib-icon { font-size: 18px; }
+  .invite-banner .ib-arrow { margin-left: auto; color: #C2501B; opacity: 0.6; }
+  .sync-card {
+    background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; padding: 12px;
+  }
+  .sync-fields { margin-top: 4px; }
+  .sync-status { font-size: 11px; color: #8A8F98; margin-top: 8px; text-align: center; }
+  .invite-item {
+    display: flex; flex-direction: column; gap: 6px;
+    background: #F7F6F2; border-radius: 12px; padding: 12px; margin-bottom: 10px;
+  }
+  .invite-item .iv-name { font-size: 15px; font-weight: 700; }
+  .invite-item .iv-meta { font-size: 12px; color: #8A8F98; line-height: 1.6; }
+  .invite-item .iv-note { font-size: 13px; color: #4A4B4C; background: #FFF; border-radius: 8px; padding: 6px 10px; }
+  .invite-item .iv-actions { display: flex; gap: 8px; margin-top: 4px; }
+  .iv-state { font-size: 12px; font-weight: 600; color: #8A8F98; }
+  .badge-send { color: #C2501B; background: rgba(224,123,57,0.12); }
+  .badge-inv { color: #3E6BC0; background: rgba(62,107,192,0.12); }
 
   /* 记录筛选 */
   .filter-bar { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
@@ -479,6 +594,7 @@
         <button class="today-chip" id="btnSound" style="margin-left:8px;background:rgba(224,123,57,0.08);color:#8A8F98;">音效：开</button>
       </div>
     </div>
+    <div class="invite-banner" id="inviteBanner" style="display:none;"></div>
     <div class="search-box">
       <svg class="sicon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
       <input type="text" id="inpSearch" placeholder="搜索菜名" autocomplete="off">
@@ -540,6 +656,7 @@
       <div class="stat"><div class="v" id="stTop">-</div><div class="k">点得最多</div></div>
       <div class="stat"><div class="v" id="stStale">-</div><div class="k">最久没吃</div></div>
     </div>
+    <div class="today-bar" id="todayBar">今天还没点菜</div>
     <div class="rec-list" id="recList"></div>
   </div>
 
@@ -576,6 +693,24 @@
       </div>
       <div class="tag-chips" id="tagChips"></div>
     </div>
+    <div id="recipeWrap">
+      <div class="field">
+        <label class="label">做法（选填 · 仅自己可见）</label>
+        <textarea id="inpRecipe" class="recipe-area" rows="4" maxlength="600" placeholder="写下做法步骤，例如：鸡胸肉切块，热油下锅炒熟，加盐调味出锅…"></textarea>
+      </div>
+      <div class="field">
+        <label class="label">配料与营养（选填）</label>
+        <div class="ing-list" id="ingList"></div>
+        <div class="ing-btn-row">
+          <button class="btn btn-ghost" id="btnAddIng" style="flex:1;">＋ 添加配料</button>
+          <button class="btn btn-ghost" id="btnCustomFoods" style="flex:1;">我的食材库</button>
+        </div>
+        <div class="nutri-hint" id="nutriHint">填了配料会自动算热量 · 内置 80+ 种常见食材</div>
+        <div class="nutri-preview" id="nutriPreview"></div>
+        <datalist id="foodList"></datalist>
+      </div>
+    </div>
+    <div class="recipe-locked" id="recipeLockedTip" style="display:none;">这道菜的做法与配料仅创建者可见，无法查看或修改</div>
     <button class="btn btn-primary save-btn" id="btnSave">保存这道菜</button>
     <button class="btn btn-danger save-btn" id="btnDelDish" style="display:none;">删除这道菜</button>
   </div>
@@ -587,6 +722,7 @@
     <div class="mine-sec">身体数据</div>
     <div class="m-body" id="mBody"></div>
     <div class="mine-sec">用户列表 · 点击切换 · 长按删除</div>
+    <div style="font-size:11px;color:#8A8F98;margin:-6px 0 8px;">开启云端同步后，家人的成员会自动出现在这里</div>
     <div id="userList"></div>
     <div class="mine-sec">设置</div>
     <div class="priv-card">
@@ -601,6 +737,29 @@
     <div class="backup-card">
       <button class="btn btn-primary" id="btnExport" style="flex:1;">导出全部备份</button>
       <button class="btn btn-ghost" id="btnImport" style="flex:1;">导入备份文件</button>
+    </div>
+    <div class="mine-sec">云端同步</div>
+    <div class="sync-card">
+      <div class="priv-row">
+        <div class="priv-txt">
+          <div class="priv-name">开启云端同步</div>
+          <div class="priv-sub">家人之间共享菜品、点菜记录和邀请；身体数据不上云</div>
+        </div>
+        <button class="switch" id="switchSync" role="switch"></button>
+      </div>
+      <div class="sync-fields" id="syncFields" style="display:none;">
+        <input class="note-input" id="syncOwner" placeholder="GitHub 用户名" autocomplete="off" style="margin-top:10px;">
+        <input class="note-input" id="syncRepo" placeholder="仓库名（如 sancansiji-sync）" autocomplete="off">
+        <input class="note-input" id="syncToken" type="password" placeholder="访问令牌（Token）" autocomplete="off">
+        <div class="mrow" style="margin-top:10px;">
+          <button class="btn btn-ghost" id="btnSyncSave" style="flex:1;">保存</button>
+          <button class="btn btn-primary" id="btnSyncNow" style="flex:1;">立即同步</button>
+        </div>
+        <div class="sync-status" id="syncStatus">尚未配置</div>
+      </div>
+    </div>
+    <div class="backup-card" style="margin-top:10px;">
+      <button class="btn btn-ghost" id="btnInviteCenter" style="flex:1;">查看点菜邀请</button>
     </div>
     <button class="fab" id="btnNewUser">＋<br><span class="fab-t">新建用户</span></button>
   </div>
@@ -642,15 +801,102 @@
   var TAGS_KEY = 'sanCanSiJi_tags_v1';
   var USERS_KEY = 'sanCanSiJi_users_v1';
   var CURRENTUSER_KEY = 'sanCanSiJi_currentuser_v1';
+  var CUSTOMFOODS_KEY = 'sanCanSiJi_customfoods_v1';
+  var SYNC_KEY = 'sanCanSiJi_sync_v1';
+  var INVITES_KEY = 'sanCanSiJi_invites_v1';
+  var SYNC_FILE = 'sancansiji-sync.json';
   var DEFAULT_CATS = ['碳水类', '蛋白类', '蔬菜类', '汤羹类', '其他'];
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
+  var customFoods = {};
   var curCat = null, selectedId = null, editingPhoto = null, nextView = null, editTags = [];
+  var syncCfg = null, invites = [], pendingSendTo = null, syncBusy = false, syncApplying = false;
 
   var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 食材营养表（每 100g 可食部：k=千卡 c=碳水g p=蛋白g f=脂肪g；参考《中国食物成分表》常见值） ---------- */
+  var FOOD_TABLE = {
+    '米饭': { k: 116, c: 25.9, p: 2.6, f: 0.3 }, '馒头': { k: 221, c: 47, p: 7, f: 1.1 },
+    '面条(煮)': { k: 110, c: 24.3, p: 3.9, f: 0.4 }, '白粥': { k: 46, c: 10, p: 1, f: 0.2 },
+    '油条': { k: 388, c: 51, p: 6.9, f: 17.6 }, '饺子(猪肉)': { k: 240, c: 24, p: 8, f: 12 },
+    '包子(猪肉)': { k: 190, c: 25, p: 7, f: 7 }, '燕麦片': { k: 367, c: 66, p: 15, f: 6.7 },
+    '全麦面包': { k: 246, c: 41, p: 8.5, f: 4.2 }, '白吐司': { k: 285, c: 47, p: 8.5, f: 7.2 },
+    '玉米': { k: 112, c: 22.8, p: 4, f: 1.2 }, '红薯': { k: 106, c: 25, p: 1.4, f: 0.2 },
+    '土豆': { k: 81, c: 17.8, p: 2.6, f: 0.2 }, '山药': { k: 57, c: 12.4, p: 1.9, f: 0.2 },
+    '米粉': { k: 97, c: 22, p: 1.8, f: 0.2 },
+    '猪肉(瘦)': { k: 143, c: 1.5, p: 20.3, f: 6.2 }, '猪里脊': { k: 155, c: 0.7, p: 20.2, f: 7.9 },
+    '五花肉': { k: 508, c: 0.7, p: 7.7, f: 52.9 }, '排骨': { k: 278, c: 0.7, p: 16.7, f: 23.1 },
+    '鸡胸肉': { k: 133, c: 0.6, p: 19.4, f: 5 }, '鸡腿肉': { k: 209, c: 0, p: 26, f: 11 },
+    '鸡翅': { k: 194, c: 4.6, p: 17.4, f: 11.8 }, '鸭肉': { k: 240, c: 0.2, p: 15.5, f: 19.7 },
+    '牛肉(瘦)': { k: 106, c: 1.2, p: 20.2, f: 2.3 }, '肥牛': { k: 300, c: 0, p: 18, f: 25 },
+    '羊肉(瘦)': { k: 118, c: 0.2, p: 20.5, f: 3.9 }, '培根': { k: 181, c: 2.6, p: 22.3, f: 9 },
+    '火腿肠': { k: 212, c: 15.6, p: 14, f: 10.4 }, '腊肠': { k: 584, c: 15.3, p: 22, f: 48.3 },
+    '鸡蛋': { k: 144, c: 2.8, p: 13.3, f: 8.8 }, '鸭蛋': { k: 180, c: 3.1, p: 12.6, f: 13 },
+    '皮蛋': { k: 171, c: 4.5, p: 14.2, f: 10.7 }, '鹌鹑蛋': { k: 160, c: 2.1, p: 12.8, f: 11.1 },
+    '牛奶': { k: 66, c: 3.4, p: 3.2, f: 3.2 }, '酸奶': { k: 72, c: 9.3, p: 2.5, f: 2.7 },
+    '奶粉': { k: 478, c: 51.7, p: 20.1, f: 21.2 },
+    '豆腐(北)': { k: 105, c: 5.3, p: 9.2, f: 6.2 }, '豆腐(南)': { k: 57, c: 2.9, p: 6.2, f: 2.5 },
+    '豆腐干': { k: 140, c: 6.7, p: 14.2, f: 7.2 }, '腐竹': { k: 461, c: 32.4, p: 44.6, f: 21.7 },
+    '黄豆': { k: 390, c: 34.2, p: 35, f: 16 }, '豆浆': { k: 31, c: 1.8, p: 3, f: 1.6 },
+    '草鱼': { k: 113, c: 0, p: 16.6, f: 5.2 }, '鲫鱼': { k: 108, c: 3.8, p: 17.1, f: 2.7 },
+    '鲤鱼': { k: 109, c: 0.5, p: 17.6, f: 4.1 }, '带鱼': { k: 127, c: 3.1, p: 17.7, f: 4.9 },
+    '三文鱼': { k: 139, c: 0, p: 17.2, f: 7.8 }, '虾': { k: 93, c: 0.9, p: 16.8, f: 2.4 },
+    '螃蟹': { k: 95, c: 2.3, p: 13.8, f: 2.3 }, '鱿鱼': { k: 84, c: 3.1, p: 17, f: 0.8 },
+    '蛤蜊': { k: 62, c: 5.8, p: 10.1, f: 1.1 }, '海带': { k: 16, c: 3.9, p: 0.5, f: 0.1 },
+    '大白菜': { k: 18, c: 3.2, p: 1.5, f: 0.1 }, '小白菜': { k: 15, c: 2.4, p: 1.5, f: 0.3 },
+    '菠菜': { k: 24, c: 4.5, p: 2.6, f: 0.3 }, '生菜': { k: 16, c: 2.9, p: 1.3, f: 0.3 },
+    '芹菜': { k: 17, c: 3.3, p: 1.2, f: 0.2 }, '油菜': { k: 23, c: 3.8, p: 2.6, f: 0.4 },
+    '西兰花': { k: 36, c: 4.3, p: 4.1, f: 0.6 }, '花菜': { k: 26, c: 4.6, p: 2.1, f: 0.2 },
+    '西红柿': { k: 20, c: 4, p: 0.9, f: 0.2 }, '黄瓜': { k: 16, c: 2.9, p: 0.8, f: 0.2 },
+    '冬瓜': { k: 12, c: 2.6, p: 0.4, f: 0.2 }, '南瓜': { k: 23, c: 5.3, p: 0.7, f: 0.1 },
+    '青椒': { k: 23, c: 5.4, p: 1.4, f: 0.3 }, '茄子': { k: 23, c: 4.9, p: 1.1, f: 0.2 },
+    '胡萝卜': { k: 39, c: 8.8, p: 1, f: 0.2 }, '白萝卜': { k: 21, c: 5, p: 0.9, f: 0.1 },
+    '洋葱': { k: 40, c: 9, p: 1.1, f: 0.2 }, '韭菜': { k: 26, c: 4.5, p: 2.4, f: 0.4 },
+    '豆芽': { k: 18, c: 4, p: 2.1, f: 0.1 }, '蘑菇': { k: 24, c: 4.1, p: 2.7, f: 0.1 },
+    '香菇': { k: 27, c: 5.5, p: 2.2, f: 0.3 }, '金针菇': { k: 26, c: 6, p: 2.4, f: 0.4 },
+    '木耳': { k: 27, c: 6, p: 1.5, f: 0.2 }, '莲藕': { k: 73, c: 17.2, p: 1.9, f: 0.2 },
+    '莴笋': { k: 15, c: 2.8, p: 1, f: 0.1 }, '紫菜': { k: 250, c: 44.1, p: 26.7, f: 1.1 },
+    '苹果': { k: 54, c: 13.7, p: 0.2, f: 0.2 }, '香蕉': { k: 93, c: 22, p: 1.4, f: 0.2 },
+    '橙子': { k: 48, c: 11.1, p: 0.8, f: 0.2 }, '西瓜': { k: 31, c: 6.8, p: 0.5, f: 0.3 },
+    '葡萄': { k: 45, c: 10.3, p: 0.5, f: 0.2 }, '梨': { k: 51, c: 13.1, p: 0.4, f: 0.1 },
+    '草莓': { k: 32, c: 7.1, p: 1, f: 0.2 }, '红枣': { k: 276, c: 67.8, p: 3.2, f: 0.5 },
+    '花生': { k: 574, c: 21.7, p: 26.7, f: 44.3 }, '芝麻': { k: 531, c: 24, p: 19.1, f: 46.1 },
+    '食用油': { k: 899, c: 0, p: 0, f: 99.9 }, '花生油': { k: 899, c: 0, p: 0, f: 99.9 },
+    '橄榄油': { k: 899, c: 0, p: 0, f: 99.9 }, '芝麻油': { k: 898, c: 0, p: 0, f: 99.7 },
+    '黄油': { k: 888, c: 0.5, p: 1.4, f: 98 }, '白砂糖': { k: 400, c: 99.9, p: 0, f: 0 },
+    '酱油': { k: 63, c: 10.1, p: 5.6, f: 0.1 }, '醋': { k: 31, c: 4.9, p: 2.1, f: 0.3 },
+    '盐': { k: 0, c: 0, p: 0, f: 0 }, '淀粉': { k: 345, c: 85, p: 0.2, f: 0.1 }
+  };
+  function calcNutrition(items) {
+    var r = { k: 0, c: 0, p: 0, f: 0, unknown: [] };
+    if (items && items.length) {
+      items.forEach(function (it) {
+        var fd = FOOD_TABLE[it.name] || customFoods[it.name];
+        var g = parseFloat(it.grams) || 0;
+        if (!fd) { if (g > 0) r.unknown.push(it.name); return; }
+        r.k += fd.k * g / 100;
+        r.c += fd.c * g / 100;
+        r.p += fd.p * g / 100;
+        r.f += fd.f * g / 100;
+      });
+    }
+    r.k = Math.round(r.k);
+    r.c = Math.round(r.c * 10) / 10;
+    r.p = Math.round(r.p * 10) / 10;
+    r.f = Math.round(r.f * 10) / 10;
+    return r;
+  }
+  function dishNutrition(name) {
+    for (var i = 0; i < dishes.length; i++) {
+      if (dishes[i].name === name && dishes[i].recipe && dishes[i].recipe.items && dishes[i].recipe.items.length) {
+        return calcNutrition(dishes[i].recipe.items);
+      }
+    }
+    return null;
+  }
 
   /* ---------- 存储 ---------- */
   function load() {
@@ -661,6 +907,9 @@
       records = JSON.parse(localStorage.getItem(RECORDS_KEY)) || [];
       users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
       try { catBgs = JSON.parse(localStorage.getItem(CATBGS_KEY)) || {}; } catch (e) { catBgs = {}; }
+      try { customFoods = JSON.parse(localStorage.getItem(CUSTOMFOODS_KEY)) || {}; } catch (e) { customFoods = {}; }
+      try { syncCfg = JSON.parse(localStorage.getItem(SYNC_KEY)) || null; } catch (e) { syncCfg = null; }
+      try { invites = JSON.parse(localStorage.getItem(INVITES_KEY)) || []; } catch (e) { invites = []; }
     } catch (e) {
       cats = null; tags = []; dishes = []; records = []; users = [];
       catBgs = {};
@@ -683,6 +932,10 @@
       if (!r.uid) r.uid = 'u_default';
       if (r.note === undefined) r.note = '';
     });
+    dishes.forEach(function (d) {
+      if (!d.owner) d.owner = 'u_default';
+      if (d.recipe === undefined) d.recipe = null;
+    });
     users.forEach(function (u) {
       if (!Array.isArray(u.measures)) u.measures = [];
       if (u.height === undefined) u.height = null;
@@ -703,7 +956,10 @@
       localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
       localStorage.setItem(USERS_KEY, JSON.stringify(users));
       localStorage.setItem(CATBGS_KEY, JSON.stringify(catBgs));
+      localStorage.setItem(CUSTOMFOODS_KEY, JSON.stringify(customFoods));
+      localStorage.setItem(INVITES_KEY, JSON.stringify(invites));
       if (currentUser) localStorage.setItem(CURRENTUSER_KEY, currentUser.id);
+      trackSyncDirty();
       return true;
     } catch (e) {
       toast('存储空间不足：请删除一些记录或减少照片大小');
@@ -713,6 +969,44 @@
 
   function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+  function shortId(id) {
+    return String(id).slice(-8).toUpperCase();
+  }
+  /* 老版本每台设备默认同一个 u_default，会把家人的身份撞在一起；
+     首次启动时自动把它升级成这台设备独有的唯一 ID，并同步改掉相关记录归属 */
+  function migrateDefaultUser() {
+    if (localStorage.getItem('sanCanSiJi_uuid_v1')) return;
+    var def = null;
+    for (var i = 0; i < users.length; i++) {
+      if (users[i].id === 'u_default') { def = users[i]; break; }
+    }
+    if (!def) {
+      try { localStorage.setItem('sanCanSiJi_uuid_v1', '1'); } catch (e) {}
+      return;
+    }
+    var newId = 'u_' + uid();
+    def.id = newId;
+    if (def.name === '我') def.name = '我';
+    records.forEach(function (r) {
+      if (r.uid === 'u_default') r.uid = newId;
+      if (r.by === 'u_default') r.by = newId;
+    });
+    dishes.forEach(function (d) {
+      if (d.owner === 'u_default') d.owner = newId;
+    });
+    invites.forEach(function (v) {
+      if (v.from === 'u_default') v.from = newId;
+      if (v.to === 'u_default') v.to = newId;
+    });
+    if (currentUser && currentUser.id === 'u_default') currentUser = def;
+    try { localStorage.setItem(CURRENTUSER_KEY, newId); } catch (e) {}
+    try { localStorage.setItem('sanCanSiJi_users_v1', JSON.stringify(users)); } catch (e) {}
+    try { localStorage.setItem('sanCanSiJi_records_v1', JSON.stringify(records)); } catch (e) {}
+    try { localStorage.setItem('sanCanSiJi_dishes_v1', JSON.stringify(dishes)); } catch (e) {}
+    try { localStorage.setItem('sanCanSiJi_invites_v1', JSON.stringify(invites)); } catch (e) {}
+    try { localStorage.setItem('sanCanSiJi_uuid_v1', '1'); } catch (e) {}
+    queueToast('已为你生成唯一的家庭身份 ID（' + shortId(newId) + '），建议到「我的」把昵称改成自己的名字');
   }
 
   function esc(s) {
@@ -754,6 +1048,7 @@
       tabs[i].classList.toggle('active', tabs[i].getAttribute('data-view') === name || ((name === 'cat' || name === 'wheel') && tabs[i].getAttribute('data-view') === 'home'));
     }
     window.scrollTo(0, 0);
+    if (name === 'home') renderInviteBanner();
   }
 
   /* ---------- 渲染：首页 ---------- */
@@ -901,12 +1196,18 @@
   $('btnOrderSearch').addEventListener('click', function () {
     var dish = dishes.filter(function (d) { return d.id === selectedId; })[0];
     if (!dish) return;
-    showOrderConfirm(dish, function (note) {
-      addRecord(dish, 'manual', note);
-      sfxSuccess();
-      toast('已点：' + dish.name);
-      selectedId = null;
-      renderSearch();
+    showOrderConfirm(dish, function (note, meal, sendTo) {
+      if (sendTo) {
+        createInvite(dish, meal, sendTo, note);
+        selectedId = null;
+        renderSearch();
+      } else {
+        addRecord(dish, 'manual', note, meal);
+        sfxSuccess();
+        toast('已点：' + dish.name);
+        selectedId = null;
+        renderSearch();
+      }
     });
   });
 
@@ -938,11 +1239,16 @@
       if (d.tags && d.tags.length) {
         tagHtml = '<div class="dtags">' + d.tags.map(function (t) { return '<span class="tag-chip">' + esc(t) + '</span>'; }).join('') + '</div>';
       }
+      var kcalHtml = '';
+      if (viewMode !== 'small' && d.recipe && d.recipe.items && d.recipe.items.length) {
+        var nr0 = calcNutrition(d.recipe.items);
+        kcalHtml = '<div class="dtags"><span class="kcal-tag">' + nr0.k + ' 千卡</span></div>';
+      }
       html += '<div class="dish' + sel + '" data-id="' + esc(d.id) + '">' +
         '<button class="edit-btn" data-id="' + esc(d.id) + '">✎</button>' +
         (d.photo ? '<img class="photo" src="' + d.photo + '" alt="">' : '<div class="no-photo">菜</div>') +
         '<div class="dname">' + esc(d.name) + '</div>' +
-        tagHtml +
+        tagHtml + kcalHtml +
         '</div>';
     });
     $('dishGrid').innerHTML = html;
@@ -963,6 +1269,19 @@
           for (var j = 0; j < all.length; j++) all[j].classList.remove('selected');
           if (selectedId) el.classList.add('selected');
           $('btnOrder').disabled = !selectedId;
+        };
+      })(items[i]));
+      /* 长按卡片：查看详情（营养 + 做法，做法仅创建者可见） */
+      attachLongPress(items[i], (function (el) {
+        return function () {
+          selectedId = null;
+          var all = $('dishGrid').querySelectorAll('.dish');
+          for (var j = 0; j < all.length; j++) all[j].classList.remove('selected');
+          $('btnOrder').disabled = true;
+          var id = el.getAttribute('data-id');
+          var dd = null;
+          for (var k = 0; k < dishes.length; k++) if (dishes[k].id === id) { dd = dishes[k]; break; }
+          if (dd) showDishDetail(dd.name, dd.cat, dd.photo, dd.ts, dd.id);
         };
       })(items[i]));
     }
@@ -1012,7 +1331,15 @@
       return true;
     });
   }
-  function addRecord(dish, mode, note) {
+  function currentMeal() {
+    var h = new Date().getHours();
+    if (h < 10) return '早餐';
+    if (h < 14) return '午餐';
+    if (h < 20) return '晚餐';
+    return '夜宵';
+  }
+  var MEALS = ['早餐', '午餐', '晚餐', '夜宵'];
+  function addRecord(dish, mode, note, meal) {
     var rec = {
       id: uid(),
       name: dish.name,
@@ -1020,6 +1347,7 @@
       photo: dish.photo || '',
       mode: mode,
       note: note || '',
+      meal: meal || '',
       uid: currentUser ? currentUser.id : 'u_default',
       ts: Date.now()
     };
@@ -1052,6 +1380,19 @@
       }
     });
     $('stStale').textContent = stale ? stale + ' ' + staleDays + ' 天' : '暂无';
+    var d0 = new Date(); d0.setHours(0, 0, 0, 0);
+    var today = urec.filter(function (r) { return r.ts >= d0.getTime(); });
+    var kcalSum = 0;
+    today.forEach(function (r) {
+      var n = dishNutrition(r.name);
+      if (n) kcalSum += n.k;
+    });
+    var bar = $('todayBar');
+    if (bar) {
+      bar.innerHTML = today.length === 0
+        ? '今天还没点菜'
+        : '今天点了 <b>' + today.length + '</b> 道 · 约 <b>' + Math.round(kcalSum) + '</b> 千卡';
+    }
   }
 
   function fchip(k, val, text, active) {
@@ -1093,25 +1434,33 @@
       return;
     }
     list.forEach(function (r) {
-      var u = userById(r.uid);
-      var uname = u ? u.name : '我';
-      var av = u && u.avatar
-        ? '<img class="avatar" src="' + u.avatar + '" alt="">'
+      var ruUser = r.by ? userById(r.by) : userById(r.uid);
+      var uname = ruUser ? ruUser.name : '我';
+      var av = ruUser && ruUser.avatar
+        ? '<img class="avatar" src="' + ruUser.avatar + '" alt="">'
         : '<span class="avatar-ph">' + esc(uname.slice(0, 1)) + '</span>';
+      var kcal = dishNutrition(r.name);
+      var kcalTag = kcal ? '<span class="kcal-tag">' + kcal.k + ' 千卡</span>' : '';
       var noteHtml = r.note
-        ? '<button class="rec-note-btn" data-id="' + esc(r.id) + '">查看留言</button>'
+        ? '<button class="rec-note-btn" data-id="' + esc(r.id) + '">留言</button>'
         : '<span class="rec-none">无留言</span>';
+      var againBtn = '<button class="rec-again-btn" data-id="' + esc(r.id) + '">再来一道</button>';
+      var mealTag = r.meal ? '<span class="badge badge-meal">' + esc(r.meal) + '</span>' : '';
+      var modeBadge = r.invId
+        ? (r.invKind === 'send' ? '<span class="badge badge-send">发出邀请</span>' : '<span class="badge badge-inv">受邀同吃</span>')
+        : '<span class="badge ' + (r.mode === 'random' ? 'badge-random' : 'badge-manual') + '">' + (r.mode === 'random' ? '随机' : '手动') + '</span>';
       var div = document.createElement('div');
       div.className = 'rec-item';
       div.setAttribute('data-id', r.id);
       div.innerHTML =
         (r.photo ? '<img class="thumb" src="' + r.photo + '" alt="">' : '<div class="no-thumb">菜</div>') +
         '<div class="body">' +
-          '<div class="rname">' + esc(r.name) + '</div>' +
-          '<div class="meta"><span class="badge ' + (r.mode === 'random' ? 'badge-random' : 'badge-manual') + '">' + (r.mode === 'random' ? '随机点菜' : '手动点菜') + '</span>' + esc(r.cat) + ' · ' + fmtDateTime(r.ts) + '</div>' +
+          '<div class="rname">' + esc(r.name) + kcalTag + '</div>' +
+          '<div class="meta">' + modeBadge + mealTag + esc(r.cat) + ' · ' + fmtDateTime(r.ts) + '</div>' +
         '</div>' +
-        '<div class="note">' + noteHtml + '</div>' +
-        '<div class="ru">' + av + '<span class="nick">' + esc(uname) + '</span></div>' +
+        '<div class="ru">' + av + '<span class="nick">' + esc(uname) + '</span>' +
+          '<div class="ru-acts">' + noteHtml + againBtn + '</div>' +
+        '</div>' +
         '<button class="del" data-id="' + esc(r.id) + '">✕</button>';
       $('recList').appendChild(div);
     });
@@ -1133,6 +1482,27 @@
         var rid = this.getAttribute('data-id');
         var r = records.filter(function (x) { return x.id === rid; })[0];
         if (r && r.note) showNoteView(r.note);
+      });
+    }
+    var againBtns = $('recList').querySelectorAll('.rec-again-btn');
+    for (var ai = 0; ai < againBtns.length; ai++) {
+      againBtns[ai].addEventListener('click', function (e) {
+        e.stopPropagation();
+        var rid = this.getAttribute('data-id');
+        var r = records.filter(function (x) { return x.id === rid; })[0];
+        if (!r) return;
+        var dish = dishes.filter(function (d) { return d.id === r.dishId || d.name === r.name; })[0];
+        if (!dish) { toast('这道菜已被删除，无法再来一道'); return; }
+        showOrderConfirm(dish, function (note, meal, sendTo) {
+          if (sendTo) {
+            createInvite(dish, meal, sendTo, note);
+          } else {
+            addRecord(dish, 'manual', note, meal);
+            sfxSuccess();
+            toast('已点：' + dish.name);
+          }
+          renderRecords();
+        });
       });
     }
     var items = $('recList').querySelectorAll('.rec-item');
@@ -1157,21 +1527,60 @@
   /* ---------- 点菜 ---------- */
   function showOrderConfirm(dish, onOk) {
     var box = $('modalBox');
+    var kcal = dishNutrition(dish.name);
+    var defMeal = currentMeal();
+    var mealChips = MEALS.map(function (m) {
+      return '<button type="button" class="meal-chip' + (m === defMeal ? ' on' : '') + '" data-m="' + m + '">' + m + '</button>';
+    }).join('');
+    var id = myId();
+    var others = users.filter(function (u) { return u.id !== id; });
+    var sendChips = '<button type="button" class="meal-chip on" data-to="">自己吃</button>' +
+      others.map(function (u) {
+        return '<button type="button" class="meal-chip" data-to="' + esc(u.id) + '">发给 ' + esc(u.name) + '</button>';
+      }).join('');
     box.innerHTML =
       (dish.photo ? '<img class="mphoto" src="' + dish.photo + '" alt="">' : '<div class="no-photo-big">菜</div>') +
       '<div class="mtitle">' + esc(dish.name) + '</div>' +
       '<div class="msub">' + esc(dish.cat) + ' · 给「' + esc(currentUser ? currentUser.name : '我') + '」点菜</div>' +
+      (kcal ? '<div class="msub" style="color:#C2501B;">约 ' + kcal.k + ' 千卡 · 蛋白 ' + kcal.p + 'g</div>' : '') +
+      '<div class="meal-row" id="mealRow">' + mealChips + '</div>' +
+      '<div class="meal-row" id="sendRow" style="margin-top:8px;">' + sendChips + '</div>' +
       '<input class="note-input" id="inpNote" placeholder="留言（选填）" maxlength="50">' +
       '<div class="mrow" style="margin-top:16px;">' +
         '<button class="btn btn-ghost" id="orderCancel" style="flex:1;">取消</button>' +
         '<button class="btn btn-primary" id="orderOk" style="flex:1;">确定点菜</button>' +
       '</div>';
     showOverlay();
+    var selMeal = defMeal;
+    var chips = box.querySelectorAll('#mealRow .meal-chip');
+    for (var i = 0; i < chips.length; i++) {
+      (function (c) {
+        c.addEventListener('click', function () {
+          for (var j = 0; j < chips.length; j++) chips[j].classList.remove('on');
+          c.classList.add('on');
+          selMeal = c.getAttribute('data-m');
+          sfxTick();
+        });
+      })(chips[i]);
+    }
+    var selTo = '';
+    var scs = box.querySelectorAll('#sendRow .meal-chip');
+    for (var k = 0; k < scs.length; k++) {
+      (function (c) {
+        c.addEventListener('click', function () {
+          for (var m = 0; m < scs.length; m++) scs[m].classList.remove('on');
+          c.classList.add('on');
+          selTo = c.getAttribute('data-to');
+          $('orderOk').textContent = selTo ? '发送邀请' : '确定点菜';
+          sfxTick();
+        });
+      })(scs[k]);
+    }
     $('orderCancel').addEventListener('click', hideOverlay);
     $('orderOk').addEventListener('click', function () {
       var note = $('inpNote') ? $('inpNote').value.trim() : '';
       hideOverlay();
-      onOk(note);
+      onOk(note, selMeal, selTo);
     });
     $('inpNote').addEventListener('keydown', function (e) {
       if (e.key === 'Enter') $('orderOk').click();
@@ -1180,12 +1589,18 @@
   function orderSelected() {
     var dish = dishes.filter(function (d) { return d.id === selectedId; })[0];
     if (!dish) return;
-    showOrderConfirm(dish, function (note) {
-      addRecord(dish, 'manual', note);
-      sfxSuccess();
-      toast('已点：' + dish.name);
-      selectedId = null;
-      renderCat();
+    showOrderConfirm(dish, function (note, meal, sendTo) {
+      if (sendTo) {
+        createInvite(dish, meal, sendTo, note);
+        selectedId = null;
+        renderCat();
+      } else {
+        addRecord(dish, 'manual', note, meal);
+        sfxSuccess();
+        toast('已点：' + dish.name);
+        selectedId = null;
+        renderCat();
+      }
     });
   }
   /* ---------- 转盘抽奖 ---------- */
@@ -1291,7 +1706,7 @@
         spinning = false;
         wheelDone = true;
         var dish = wheelDishes[idx];
-        var rec = addRecord(dish, 'random');
+        var rec = addRecord(dish, 'random', '', currentMeal());
         showWheelResult(rec);
         $('wheelHint').textContent = '抽到了：' + dish.name;
         drawWheel();
@@ -1304,11 +1719,12 @@
 
   function showWheelResult(rec) {
     var el = $('wheelResult');
+    var kcal = dishNutrition(rec.name);
     el.innerHTML =
       (rec.photo ? '<img class="rphoto" src="' + rec.photo + '" alt="">' : '<div class="rphoto" style="display:flex;align-items:center;justify-content:center;font-size:26px;color:#B5B3AB;">菜</div>') +
       '<div style="flex:1;min-width:0;">' +
         '<div class="rname">' + esc(rec.name) + '</div>' +
-        '<div class="rmeta"><span class="badge badge-random">随机点菜</span>' + esc(rec.cat) + '<br>' + fmtDateTime(rec.ts) + '</div>' +
+        '<div class="rmeta"><span class="badge badge-random">随机点菜</span>' + esc(rec.cat) + (kcal ? ' · <span style="color:#C2501B;font-weight:600;">' + kcal.k + ' 千卡</span>' : '') + '<br>' + fmtDateTime(rec.ts) + '</div>' +
       '</div>' +
       '<button class="btn btn-ghost rbtn" id="btnWheelBack2" style="padding:10px 14px;font-size:13px;">返回分类</button>';
     el.classList.add('show');
@@ -1361,10 +1777,33 @@
   }
   function showDishDetail(name, cat, photo, ts, id) {
     var box = $('modalBox');
+    var d = null;
+    if (id) {
+      for (var i = 0; i < dishes.length; i++) if (dishes[i].id === id) { d = dishes[i]; break; }
+    }
+    var ownU = (d && d.owner) ? userById(d.owner) : null;
     var html =
       (photo ? '<img class="mphoto" src="' + photo + '" alt="">' : '<div class="no-photo-big">菜</div>') +
       '<div class="mtitle">' + esc(name) + '</div>' +
-      '<div class="msub">' + esc(cat) + '<br>添加时间：' + fmtDateTime(ts) + '</div>';
+      '<div class="msub">' + esc(cat) + '<br>添加时间：' + fmtDateTime(ts) + (ownU ? '<br>创建人：' + esc(ownU.name) : '') + '</div>';
+    if (d && d.recipe && d.recipe.items && d.recipe.items.length) {
+      var nr = calcNutrition(d.recipe.items);
+      html += '<div class="nutri-card"><div class="n-title">营养成分（约）</div><div class="n-grid">' +
+        '<div class="n-item"><div class="n-v">' + nr.k + ' <span style="font-size:11px;font-weight:400;color:#8A8F98;">千卡</span></div><div class="n-l">热量</div></div>' +
+        '<div class="n-item"><div class="n-v">' + nr.c + ' <span style="font-size:11px;font-weight:400;color:#8A8F98;">g</span></div><div class="n-l">碳水</div></div>' +
+        '<div class="n-item"><div class="n-v">' + nr.p + ' <span style="font-size:11px;font-weight:400;color:#8A8F98;">g</span></div><div class="n-l">蛋白</div></div>' +
+        '<div class="n-item"><div class="n-v">' + nr.f + ' <span style="font-size:11px;font-weight:400;color:#8A8F98;">g</span></div><div class="n-l">脂肪</div></div>' +
+        '</div></div>';
+    }
+    if (d && currentUser && d.owner === currentUser.id && d.recipe && (d.recipe.steps || (d.recipe.items && d.recipe.items.length))) {
+      var itemsTxt = (d.recipe.items || []).map(function (x) { return x.name + ' ' + x.grams + 'g'; }).join('、');
+      html += '<div class="recipe-view"><div class="rv-t">做法（仅你可见）</div>' +
+        (d.recipe.steps ? '<div class="rv-steps">' + esc(d.recipe.steps) + '</div>' : '') +
+        (itemsTxt ? '<div class="rv-items">配料：' + esc(itemsTxt) + '</div>' : '') +
+        '</div>';
+    } else if (d && !(currentUser && d.owner === currentUser.id) && d.recipe && (d.recipe.steps || (d.recipe.items && d.recipe.items.length))) {
+      html += '<div class="recipe-locked">这道菜的做法与配料仅创建者可见</div>';
+    }
     if (id) {
       html += '<div class="mrow"><button class="btn btn-danger" data-act="deldish">删除这道菜</button>' +
         '<button class="btn btn-ghost" data-act="close">关闭</button></div>';
@@ -1436,7 +1875,14 @@
     editDishId = null;
     editingPhoto = null;
     editTags = [];
+    recipeSteps = '';
+    recipeItems = [];
     $('inpName').value = '';
+    $('inpRecipe').value = '';
+    var rw = $('recipeWrap');
+    var rlp = $('recipeLockedTip');
+    if (rw) rw.style.display = '';
+    if (rlp) rlp.style.display = 'none';
     $('photoBox').innerHTML = '<div style="text-align:center;line-height:1.9;">点击添加照片<br><span style="font-size:12px;">可从相册选或拍照</span></div>';
     $('addTitle').textContent = '添加新菜';
     $('btnCancelEdit').style.display = 'none';
@@ -1444,6 +1890,8 @@
     $('btnDelDish').style.display = 'none';
     renderAdd();
     renderTagChips();
+    renderIngRows();
+    updateNutri();
   }
 
   function openEditDish(id) {
@@ -1460,9 +1908,190 @@
     $('btnCancelEdit').style.display = '';
     $('btnSave').textContent = '保存修改';
     $('btnDelDish').style.display = '';
+    $('inpRecipe').value = (d.recipe && d.recipe.steps) ? d.recipe.steps : '';
+    recipeItems = (d.recipe && d.recipe.items) ? d.recipe.items.map(function (x) { return { name: x.name, grams: x.grams }; }) : [];
+    var canEditRecipe = !(d.owner && currentUser && d.owner !== currentUser.id);
+    var rw = $('recipeWrap');
+    var rlp = $('recipeLockedTip');
+    if (rw) rw.style.display = canEditRecipe ? '' : 'none';
+    if (rlp) rlp.style.display = canEditRecipe ? 'none' : '';
     renderTagChips();
+    renderIngRows();
+    updateNutri();
     showView('add');
   }
+
+  /* ---------- 配料与营养 ---------- */
+  var recipeSteps = '', recipeItems = [];
+  function fillFoodList() {
+    var dl = $('foodList');
+    if (!dl) return;
+    var keys = {};
+    for (var k in FOOD_TABLE) keys[k] = 1;
+    for (var c in customFoods) keys[c] = 1;
+    var h = '';
+    for (var n in keys) h += '<option value="' + esc(n) + '">';
+    dl.innerHTML = h;
+  }
+  function renderIngRows() {
+    var list = $('ingList');
+    if (!list) return;
+    list.innerHTML = '';
+    recipeItems.forEach(function (it, idx) {
+      var row = document.createElement('div');
+      row.className = 'ing-row';
+      row.innerHTML =
+        '<input class="ing-name" list="foodList" placeholder="食材（可搜索）" value="' + esc(it.name) + '" maxlength="12">' +
+        '<span class="ing-g-label">克</span>' +
+        '<input class="ing-grams" type="number" min="1" step="5" placeholder="克数" value="' + (it.grams || '') + '">' +
+        '<button class="ing-del" type="button">✕</button>';
+      list.appendChild(row);
+      var nm = row.querySelector('.ing-name');
+      var gm = row.querySelector('.ing-grams');
+      nm.addEventListener('input', function () {
+        var v = this.value.trim();
+        this.classList.toggle('ok', !!(FOOD_TABLE[v] || customFoods[v]));
+        updateNutri();
+      });
+      gm.addEventListener('input', updateNutri);
+      row.querySelector('.ing-del').addEventListener('click', function () {
+        syncDomToItems();
+        recipeItems.splice(idx, 1);
+        renderIngRows();
+        updateNutri();
+      });
+    });
+  }
+  function syncDomToItems() {
+    var rows = $('ingList').querySelectorAll('.ing-row');
+    recipeItems = [];
+    for (var i = 0; i < rows.length; i++) {
+      recipeItems.push({
+        name: rows[i].querySelector('.ing-name').value.trim(),
+        grams: rows[i].querySelector('.ing-grams').value.trim()
+      });
+    }
+  }
+  function addIngRow(name, grams) {
+    syncDomToItems();
+    recipeItems.push({ name: name || '', grams: grams || '' });
+    renderIngRows();
+  }
+  /* ---------- 我的食材库（自定义食材） ---------- */
+  function showCustomFoods() {
+    var box = $('modalBox');
+    var rows = '';
+    for (var k in customFoods) {
+      var f = customFoods[k];
+      rows += '<div class="cf-row">' +
+        '<div class="cf-info"><b>' + esc(k) + '</b><span>' + (f.k || 0) + ' 千卡 · 碳水 ' + (f.c || 0) + 'g · 蛋白 ' + (f.p || 0) + 'g · 脂肪 ' + (f.f || 0) + 'g / 100g</span></div>' +
+        '<button class="cf-edit" data-k="' + esc(k) + '">改</button>' +
+        '<button class="cf-del" data-k="' + esc(k) + '">✕</button>' +
+        '</div>';
+    }
+    box.innerHTML =
+      '<div class="mtitle" style="font-size:17px;">我的食材库</div>' +
+      '<div class="msub">内置营养表没有的食材，来这里补一次，以后一直能用。按包装「每 100 克」营养表填，或估个相近值。</div>' +
+      '<div class="cf-new">' +
+        '<input id="cfName" placeholder="食材名，如：速冻水饺 / 螺蛳粉" maxlength="12">' +
+        '<div class="cf-nums">' +
+          '<input id="cfK" type="number" min="0" placeholder="热量" inputmode="decimal">' +
+          '<input id="cfC" type="number" min="0" placeholder="碳水" inputmode="decimal">' +
+          '<input id="cfP" type="number" min="0" placeholder="蛋白" inputmode="decimal">' +
+          '<input id="cfF" type="number" min="0" placeholder="脂肪" inputmode="decimal">' +
+        '</div>' +
+        '<button class="btn btn-primary" id="cfSave" style="width:100%;">保存到食材库</button>' +
+      '</div>' +
+      (rows ? '<div class="cf-list">' + rows + '</div>' : '<div class="empty-tip" style="padding:14px 0;">还没有自定义食材<br>遇到表里没有的食材时来添加即可</div>') +
+      '<div class="mrow" style="margin-top:12px;"><button class="btn btn-ghost" id="cfClose" style="flex:1;">关闭</button></div>';
+    showOverlay();
+    var save = function () {
+      var nm = $('cfName').value.trim();
+      if (!nm) { toast('请填写食材名'); return; }
+      var k = parseFloat($('cfK').value) || 0;
+      var c = parseFloat($('cfC').value) || 0;
+      var p = parseFloat($('cfP').value) || 0;
+      var f = parseFloat($('cfF').value) || 0;
+      if (k === 0 && c === 0 && p === 0 && f === 0) { toast('至少填一个营养数值'); return; }
+      if (FOOD_TABLE[nm]) { toast('「' + nm + '」已在内置营养表里，不用添加'); return; }
+      customFoods[nm] = { k: k, c: c, p: p, f: f };
+      persist(); sfxSuccess();
+      fillFoodList();
+      showCustomFoods();
+      toast('已加入食材库：' + nm);
+    };
+    $('cfSave').addEventListener('click', save);
+    $('cfClose').addEventListener('click', hideOverlay);
+    var edits = box.querySelectorAll('.cf-edit');
+    for (var i = 0; i < edits.length; i++) {
+      edits[i].addEventListener('click', function () {
+        var k = this.getAttribute('data-k');
+        var f = customFoods[k];
+        $('cfName').value = k;
+        $('cfK').value = f.k || '';
+        $('cfC').value = f.c || '';
+        $('cfP').value = f.p || '';
+        $('cfF').value = f.f || '';
+        window.scrollTo(0, 0);
+      });
+    }
+    var dels = box.querySelectorAll('.cf-del');
+    for (var j = 0; j < dels.length; j++) {
+      dels[j].addEventListener('click', function () {
+        var k = this.getAttribute('data-k');
+        showConfirm('从食材库删除「' + k + '」？已用它算过的菜不受影响。', function () {
+          delete customFoods[k];
+          persist(); sfxDelete();
+          fillFoodList();
+          showCustomFoods();
+          toast('已删除');
+        });
+      });
+    }
+  }
+  $('btnCustomFoods').addEventListener('click', showCustomFoods);
+  function collectIngRows() {
+    var rows = $('ingList').querySelectorAll('.ing-row');
+    var items = [];
+    for (var i = 0; i < rows.length; i++) {
+      var n = rows[i].querySelector('.ing-name').value.trim();
+      var g = parseFloat(rows[i].querySelector('.ing-grams').value);
+      if (n && g > 0) items.push({ name: n, grams: g });
+    }
+    return items;
+  }
+  function updateNutri() {
+    var rows = $('ingList').querySelectorAll('.ing-row');
+    var items = [];
+    var dirty = false;
+    for (var i = 0; i < rows.length; i++) {
+      var n = rows[i].querySelector('.ing-name').value.trim();
+      var g = rows[i].querySelector('.ing-grams').value.trim();
+      items.push({ name: n, grams: g });
+      if (n || g) dirty = true;
+    }
+    var pv = $('nutriPreview');
+    var ht = $('nutriHint');
+    if (!dirty) {
+      pv.classList.remove('show');
+      pv.innerHTML = '';
+      ht.textContent = '填了配料会自动算热量 · 内置 80+ 种常见食材';
+      return;
+    }
+    var r = calcNutrition(items);
+    var ok = items.filter(function (x) { return x.name && parseFloat(x.grams) > 0; }).length;
+    ht.textContent = ok + ' 项已计入 · 营养表外的食材不计入';
+    pv.innerHTML =
+      '<div class="np-t">约 ' + r.k + ' 千卡</div>' +
+      '<div class="np-row">' +
+        '<span class="np-item">碳水 <b>' + r.c + '</b> g</span>' +
+        '<span class="np-item">蛋白 <b>' + r.p + '</b> g</span>' +
+        '<span class="np-item">脂肪 <b>' + r.f + '</b> g</span>' +
+      '</div>' +
+      (r.unknown.length ? '<div class="np-warn">「' + r.unknown.join('、') + '」不在营养表里，点下方「我的食材库」补一次就能用</div>' : '');
+    pv.classList.add('show');
+  }
+  $('btnAddIng').addEventListener('click', function () { addIngRow('', ''); });
 
   function backFromEdit() {
     resetEdit();
@@ -1529,12 +2158,15 @@
     var cat = $('selCat').value || cats[0];
     if (!name) { toast('请先填写菜名'); return; }
     if (!editingPhoto) { toast('请先添加一张照片'); return; }
+    var recipe = { steps: $('inpRecipe').value.trim(), items: collectIngRows() };
     if (editDishId) {
       var d = dishes.filter(function (x) { return x.id === editDishId; })[0];
       if (!d) { backFromEdit(); return; }
       d.name = name;
       d.cat = cat;
       d.tags = editTags.slice();
+      var canEditRecipe = !(d.owner && currentUser && d.owner !== currentUser.id);
+      if (canEditRecipe) { d.recipe = recipe; } else { d.recipe = d.recipe || null; }
       if (editingPhoto !== d.photo) d.photo = editingPhoto;
       if (!persist()) { return; }
       sfxSuccess();
@@ -1544,7 +2176,7 @@
       openCat(backCat);
       return;
     }
-    dishes.push({ id: uid(), name: name, cat: cat, photo: editingPhoto, ts: Date.now(), tags: editTags.slice() });
+    dishes.push({ id: uid(), name: name, cat: cat, photo: editingPhoto, ts: Date.now(), tags: editTags.slice(), owner: currentUser ? currentUser.id : 'u_default', recipe: recipe });
     if (!persist()) { dishes.pop(); return; }
     sfxSuccess();
     toast('已保存：' + name);
@@ -1553,7 +2185,31 @@
     openCat(cat);
   });
 
-  /* ---------- 顶部/底部事件 ---------- */
+  /* 顶部/底部事件 */
+  /* iOS 式：屏幕左边缘右滑返回 */
+  function doBack() {
+    if ($('overlay').classList.contains('show')) { hideOverlay(); sfxClick(); return; }
+    var v = document.querySelector('.view.active');
+    if (!v) return;
+    var id = v.id;
+    if (id === 'view-wheel') { backFromWheel(); sfxClick(); }
+    else if (id === 'view-cat') { renderHome(); showView('home'); sfxClick(); }
+  }
+  var swipeStart = null;
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) { swipeStart = null; return; }
+    var t = e.touches[0];
+    swipeStart = (t.clientX <= 34) ? { x: t.clientX, y: t.clientY } : null;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!swipeStart) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - swipeStart.x;
+    var dy = t.clientY - swipeStart.y;
+    swipeStart = null;
+    if (dx > 64 && Math.abs(dy) < 72) doBack();
+  }, { passive: true });
+
   $('btnBack').addEventListener('click', function () {
     renderHome();
     showView('home');
@@ -1597,11 +2253,438 @@
     renderMine();
   });
 
+  /* ---------- 云端同步（GitHub 私有仓库） ---------- */
+  function saveSyncCfg() {
+    try { localStorage.setItem(SYNC_KEY, JSON.stringify(syncCfg)); } catch (e) { }
+  }
+  function renderSync() {
+    var sw = $('switchSync');
+    if (sw) sw.classList.toggle('on', !!(syncCfg && syncCfg.on));
+    var fields = $('syncFields');
+    if (fields) fields.style.display = (syncCfg && syncCfg.on) ? 'block' : 'none';
+    if (syncCfg && syncCfg.on) {
+      if ($('syncOwner')) $('syncOwner').value = syncCfg.owner || '';
+      if ($('syncRepo')) $('syncRepo').value = syncCfg.repo || '';
+      if ($('syncToken')) $('syncToken').value = syncCfg.token || '';
+      var st = $('syncStatus');
+      if (st) {
+        if (syncCfg.conflict) {
+          st.innerHTML = '⚠ 本机有改动，云端也有新数据。<br>' +
+            '<div class="mrow" style="margin-top:8px;">' +
+            '<button class="btn btn-ghost" id="btnOverwriteLocal" style="flex:1;font-size:12px;">下载云端覆盖本机</button>' +
+            '<button class="btn btn-primary" id="btnOverwriteCloud" style="flex:1;font-size:12px;">上传本机覆盖云端</button>' +
+            '</div>';
+          if ($('btnOverwriteLocal')) $('btnOverwriteLocal').addEventListener('click', function () { syncCfg.conflict = false; saveSyncCfg(); pullFromCloud(); });
+          if ($('btnOverwriteCloud')) $('btnOverwriteCloud').addEventListener('click', function () { syncCfg.conflict = false; saveSyncCfg(); pushToCloud(true); });
+        } else {
+          var t = syncCfg.lastPush ? new Date(syncCfg.lastPush).toLocaleString() : '';
+          st.textContent = syncCfg.dirty ? '有改动待上传' : (t ? '上次同步：' + t : '已开启，等待同步');
+        }
+      }
+    }
+  }
+  function toggleSync(on) {
+    if (on) {
+      if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
+      if (!syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
+        if (!$('syncFields') || $('syncFields').style.display !== 'block') {
+          if ($('syncFields')) $('syncFields').style.display = 'block';
+        }
+        toast('请先填写 GitHub 用户名、仓库名和令牌');
+        return;
+      }
+      syncCfg.on = true;
+      syncCfg.dirty = true;
+      syncCfg.conflict = false;
+      saveSyncCfg();
+      renderSync();
+      toast('云端同步已开启');
+      setTimeout(autoSync, 600);
+    } else {
+      if (syncCfg) { syncCfg.on = false; saveSyncCfg(); }
+      renderSync();
+      toast('云端同步已关闭');
+    }
+  }
+  function b64Encode(str) {
+    try {
+      var bytes = new TextEncoder().encode(str);
+      var bin = '';
+      for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin);
+    } catch (e) { return ''; }
+  }
+  function b64Decode(b64) {
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function ghApi(url, method, body) {
+    return fetch(url, {
+      method: method || 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + syncCfg.token,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (r) {
+      return r.json().then(function (j) { return { ok: r.ok, status: r.status, json: j }; });
+    }).catch(function () {
+      return { ok: false, status: 0, json: null };
+    });
+  }
+  function ghRepoUrl() {
+    return 'https://api.github.com/repos/' + encodeURIComponent(syncCfg.owner) + '/' + encodeURIComponent(syncCfg.repo);
+  }
+  function ghGetFile() {
+    return ghApi(ghRepoUrl() + '/contents/' + SYNC_FILE).then(function (res) {
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error('读取云端失败(' + res.status + ') ' + ((res.json && res.json.message) || ''));
+      return { content: b64Decode(res.json.content), sha: res.json.sha };
+    });
+  }
+  function ghPutFile(content, sha, tries) {
+    var body = { message: '三餐四季同步 ' + new Date().toLocaleString(), content: b64Encode(content) };
+    if (sha) body.sha = sha;
+    return ghApi(ghRepoUrl() + '/contents/' + SYNC_FILE, 'PUT', body).then(function (res) {
+      if (res.status === 422 && sha && (tries || 0) < 2) {
+        return ghGetFile().then(function (f) {
+          if (!f) return ghPutFile(content, undefined, (tries || 0) + 1);
+          return ghPutFile(content, f.sha, (tries || 0) + 1);
+        });
+      }
+      if (!res.ok) throw new Error('上传云端失败(' + res.status + ') ' + ((res.json && res.json.message) || ''));
+      return true;
+    });
+  }
+  function buildPayload() {
+    return {
+      v: 2, updatedAt: Date.now(),
+      cats: cats, catBgs: catBgs, tags: tags, dishes: dishes,
+      users: users.map(function (u) { return { id: u.id, name: u.name, avatar: u.avatar || '', ts: u.ts || 0 }; }),
+      records: records, customFoods: customFoods, invites: invites
+    };
+  }
+  function mergeUsers(cloudUsers) {
+    var map = {};
+    users.forEach(function (u) { map[u.id] = u; });
+    cloudUsers.forEach(function (cu) {
+      var lu = map[cu.id] || {};
+      map[cu.id] = {
+        id: cu.id, name: cu.name || lu.name || '成员',
+        avatar: cu.avatar || lu.avatar || '', ts: cu.ts || Date.now(),
+        measures: lu.measures || [], height: lu.height,
+        allowShare: lu.allowShare !== undefined ? lu.allowShare : true
+      };
+    });
+    var merged = [];
+    for (var k in map) merged.push(map[k]);
+    users = merged;
+    if (!users.length) users = [{ id: 'u_' + uid(), name: '我', avatar: '', ts: Date.now() }];
+    if (currentUser) {
+      var cu = null;
+      for (var i = 0; i < users.length; i++) if (users[i].id === currentUser.id) { cu = users[i]; break; }
+      if (!cu) { currentUser = users[0]; localStorage.setItem(CURRENTUSER_KEY, users[0].id); }
+      else currentUser = cu;
+    }
+  }
+  function applyPayload(p) {
+    syncApplying = true;
+    try {
+      if (Array.isArray(p.cats)) cats = p.cats;
+      if (p.catBgs && typeof p.catBgs === 'object') catBgs = p.catBgs;
+      if (Array.isArray(p.tags)) tags = p.tags;
+      if (Array.isArray(p.dishes)) dishes = p.dishes;
+      if (Array.isArray(p.records)) records = p.records;
+      if (p.customFoods && typeof p.customFoods === 'object') customFoods = p.customFoods;
+      if (Array.isArray(p.invites)) invites = p.invites;
+      if (Array.isArray(p.users)) mergeUsers(p.users);
+      persist();
+    } finally {
+      syncApplying = false;
+    }
+  }
+  var lastDataSig = -1, autoPushTimer = null;
+  function dataSig() {
+    try { return JSON.stringify(buildPayload()).length; } catch (e) { return -1; }
+  }
+  function trackSyncDirty() {
+    if (!syncCfg || !syncCfg.on || syncApplying) return;
+    var sig = dataSig();
+    if (sig !== lastDataSig) {
+      lastDataSig = sig;
+      if (!syncCfg.dirty) { syncCfg.dirty = true; syncCfg.conflict = false; saveSyncCfg(); }
+      scheduleAutoPush();
+    }
+  }
+  function scheduleAutoPush() {
+    if (autoPushTimer) clearTimeout(autoPushTimer);
+    autoPushTimer = setTimeout(function () { pushToCloud(false); }, 3000);
+  }
+  function pushToCloud(manual) {
+    if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
+      if (manual) toast('请先完成同步设置');
+      return Promise.resolve();
+    }
+    if (syncBusy) return Promise.resolve();
+    syncBusy = true;
+    var payload = buildPayload();
+    payload.updatedAt = Date.now();
+    var content = JSON.stringify(payload);
+    return ghGetFile().then(function (f) {
+      return ghPutFile(content, f ? f.sha : undefined);
+    }).then(function () {
+      syncCfg.lastPush = payload.updatedAt;
+      syncCfg.dirty = false;
+      syncCfg.conflict = false;
+      saveSyncCfg();
+      renderSync();
+      if (manual) toast('已上传到云端 ✓');
+    }).catch(function (err) {
+      syncCfg.conflict = true;
+      saveSyncCfg();
+      renderSync();
+      if (manual) toast('上传失败：' + err.message);
+    }).then(function () { syncBusy = false; });
+  }
+  function pullFromCloud() {
+    if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
+      toast('请先完成同步设置');
+      return;
+    }
+    syncBusy = true;
+    ghGetFile().then(function (f) {
+      if (!f) { toast('云端还没有数据'); return null; }
+      var cloud = JSON.parse(f.content);
+      showConfirm('用云端数据覆盖本机所有数据？（菜品、记录、成员等都会被替换）', function () {
+        applyPayload(cloud);
+        syncCfg.lastPush = cloud.updatedAt || Date.now();
+        syncCfg.dirty = false;
+        syncCfg.conflict = false;
+        saveSyncCfg();
+        checkInviteAlerts();
+        var tips = [];
+        if (pendingIncoming().length) tips.push('收到 ' + pendingIncoming().length + ' 条点菜邀请');
+        if (tips.length) queueToast(tips.join('；'));
+        toast('已下载云端数据 ✓');
+        setTimeout(function () { location.reload(); }, 800);
+      });
+      return null;
+    }).catch(function (err) {
+      toast('下载失败：' + err.message);
+    }).then(function () { syncBusy = false; });
+  }
+  function autoSync() {
+    if (!syncCfg || !syncCfg.on || !syncCfg.owner || !syncCfg.repo || !syncCfg.token || syncBusy) return;
+    syncBusy = true;
+    ghGetFile().then(function (f) {
+      if (!f) {
+        if (syncCfg.dirty) return pushToCloud(false);
+        return null;
+      }
+      var cloud = null;
+      try { cloud = JSON.parse(f.content); } catch (e) { return null; }
+      var cloudT = cloud.updatedAt || 0;
+      if (cloudT > (syncCfg.lastPush || 0)) {
+        if (syncCfg.dirty) {
+          syncCfg.conflict = true;
+          saveSyncCfg();
+          renderSync();
+          toast('云端有更新，且本机有未同步的修改');
+          return null;
+        }
+        applyPayload(cloud);
+        syncCfg.lastPush = cloudT;
+        syncCfg.dirty = false;
+        syncCfg.conflict = false;
+        saveSyncCfg();
+        checkInviteAlerts();
+        var tips = [];
+        if (pendingIncoming().length) tips.push('收到 ' + pendingIncoming().length + ' 条点菜邀请');
+        if (tips.length) queueToast(tips.join('；'));
+        setTimeout(function () { location.reload(); }, 800);
+        return null;
+      }
+      if (syncCfg.dirty) return pushToCloud(false);
+      return null;
+    }).catch(function (err) {
+      toast('同步失败：' + err.message);
+    }).then(function () { syncBusy = false; });
+  }
+  function queueToast(msg) {
+    try { localStorage.setItem('sanCanSiJi_toast_v1', msg); } catch (e) { }
+  }
+  function flushQueueToast() {
+    try {
+      var m = localStorage.getItem('sanCanSiJi_toast_v1');
+      if (m) { localStorage.removeItem('sanCanSiJi_toast_v1'); toast(m); }
+    } catch (e) { }
+  }
+
+  /* ---------- 点菜邀请 ---------- */
+  function myId() { return currentUser ? currentUser.id : ''; }
+  function pendingIncoming() {
+    var id = myId();
+    return invites.filter(function (i) { return i.to === id && i.status === 'pending'; });
+  }
+  function createInvite(dish, meal, toId, note) {
+    var u = userById(toId);
+    if (!u) return;
+    var inv = {
+      id: uid(), from: myId(), to: toId, status: 'pending',
+      dish: { name: dish.name, cat: dish.cat, photo: dish.photo || '' },
+      meal: meal || '', note: note || '', ts: Date.now(), replyNote: '', repliedTs: 0
+    };
+    invites.push(inv);
+    persist();
+    sfxSuccess();
+    toast('已发送邀请给「' + u.name + '」，等 TA 确认');
+    renderInviteBanner();
+  }
+  function respondInvite(invId, accept, replyNote) {
+    var inv = null;
+    for (var i = 0; i < invites.length; i++) if (invites[i].id === invId) { inv = invites[i]; break; }
+    if (!inv || inv.status !== 'pending') return;
+    var dish = null;
+    for (var j = 0; j < dishes.length; j++) if (dishes[j].name === inv.dish.name) { dish = dishes[j]; break; }
+    var d = dish || { name: inv.dish.name, cat: inv.dish.cat, photo: inv.dish.photo || '' };
+    if (accept) {
+      records.push({ id: uid(), name: d.name, cat: d.cat, photo: d.photo || '', mode: 'manual', meal: inv.meal, note: replyNote || '', uid: inv.to, by: inv.from, invId: inv.id, invKind: 'inv', ts: Date.now() });
+      records.push({ id: uid(), name: d.name, cat: d.cat, photo: d.photo || '', mode: 'manual', meal: inv.meal, note: inv.note || '', uid: inv.from, by: inv.from, invId: inv.id, invKind: 'send', ts: Date.now() });
+    }
+    inv.status = accept ? 'accepted' : 'declined';
+    inv.replyNote = replyNote || '';
+    inv.repliedTs = Date.now();
+    persist();
+    if (accept) { sfxSuccess(); toast('已接受，双方记录都记上了 ✓'); }
+    else toast('已拒绝，这次点菜不成立');
+    renderInviteBanner();
+  }
+  function cancelInvite(invId) {
+    for (var i = 0; i < invites.length; i++) {
+      if (invites[i].id === invId && invites[i].from === myId() && invites[i].status === 'pending') {
+        invites.splice(i, 1);
+        persist();
+        toast('已撤回邀请');
+        return;
+      }
+    }
+  }
+  function checkInviteAlerts() {
+    var rn = {};
+    try { rn = JSON.parse(localStorage.getItem('sanCanSiJi_invnote_r_v1')) || {}; } catch (e) { rn = {}; }
+    var sn = {};
+    try { sn = JSON.parse(localStorage.getItem('sanCanSiJi_invnote_s_v1')) || {}; } catch (e) { sn = {}; }
+    var changedR = false, changedS = false;
+    var id = myId();
+    invites.forEach(function (inv) {
+      if (inv.to === id && inv.status === 'pending' && !rn[inv.id]) {
+        rn[inv.id] = true;
+        changedR = true;
+      }
+      if (inv.from === id && (inv.status === 'accepted' || inv.status === 'declined') && !sn[inv.id]) {
+        sn[inv.id] = true;
+        changedS = true;
+        var u = userById(inv.to);
+        var nm = u ? u.name : '对方';
+        queueToast(inv.status === 'accepted' ? nm + ' 接受了你的点菜邀请 ✓' : nm + ' 没有接受你的点菜邀请');
+      }
+    });
+    if (changedR) {
+      try { localStorage.setItem('sanCanSiJi_invnote_r_v1', JSON.stringify(rn)); } catch (e) { }
+    }
+    if (changedS) {
+      try { localStorage.setItem('sanCanSiJi_invnote_s_v1', JSON.stringify(sn)); } catch (e) { }
+    }
+  }
+  function renderInviteBanner() {
+    var el = $('inviteBanner');
+    if (!el) return;
+    var pend = pendingIncoming();
+    if (pend.length) {
+      var u = userById(pend[0].from);
+      var nm = u ? u.name : '家人';
+      el.innerHTML = '<span class="ib-icon">📩</span>' + esc(nm) + ' 发来点菜邀请' +
+        (pend.length > 1 ? '（共 ' + pend.length + ' 条）' : '') + '<span class="ib-arrow">›</span>';
+      el.style.display = 'flex';
+    } else {
+      el.style.display = 'none';
+    }
+    var ib = $('btnInviteCenter');
+    if (ib) {
+      var n = pendingIncoming().length;
+      ib.textContent = n ? '查看点菜邀请（收到 ' + n + ' 条）' : '查看点菜邀请';
+    }
+  }
+  function showInviteCenter() {
+    var box = $('modalBox');
+    var id = myId();
+    var inc = invites.filter(function (i) { return i.to === id; });
+    var out = invites.filter(function (i) { return i.from === id; });
+    var h = '<div class="mtitle" style="font-size:17px;">点菜邀请</div>';
+    h += '<div class="mine-sec" style="margin-top:8px;">收到的邀请</div>';
+    if (!inc.length) h += '<div class="iv-state" style="padding:4px 2px;">暂无</div>';
+    inc.forEach(function (inv) {
+      var u = userById(inv.from);
+      var nm = u ? u.name : '家人';
+      h += '<div class="invite-item">' +
+        '<div class="iv-name">' + esc(inv.dish.name) + '</div>' +
+        '<div class="iv-meta">' + esc(nm) + ' 想' + (inv.meal ? '「' + esc(inv.meal) + '」' : '') + '吃 · ' + esc(inv.dish.cat) + ' · ' + fmtDateTime(inv.ts) + '</div>' +
+        (inv.note ? '<div class="iv-note">留言：' + esc(inv.note) + '</div>' : '') +
+        (inv.status === 'pending'
+          ? '<input class="note-input" data-invn="' + esc(inv.id) + '" placeholder="回复留言（选填）" maxlength="50" style="font-size:13px;padding:8px 10px;">' +
+            '<div class="iv-actions">' +
+            '<button class="btn btn-ghost" data-inv="' + esc(inv.id) + '" data-act="decline" style="flex:1;font-size:13px;">不接受</button>' +
+            '<button class="btn btn-primary" data-inv="' + esc(inv.id) + '" data-act="accept" style="flex:1;font-size:13px;">接受一起吃</button>' +
+            '</div>'
+          : '<div class="iv-state">' + (inv.status === 'accepted' ? '你已接受，记录已加入双方' : '你未接受，本次点菜不成立') + '</div>')
+        + '</div>';
+    });
+    h += '<div class="mine-sec">我发出的邀请</div>';
+    if (!out.length) h += '<div class="iv-state" style="padding:4px 2px;">暂无</div>';
+    out.forEach(function (inv) {
+      var u = userById(inv.to);
+      var nm = u ? u.name : '家人';
+      h += '<div class="invite-item">' +
+        '<div class="iv-name">' + esc(inv.dish.name) + '</div>' +
+        '<div class="iv-meta">发给 ' + esc(nm) + (inv.meal ? ' · 「' + esc(inv.meal) + '」吃' : '') + ' · ' + esc(inv.dish.cat) + '</div>' +
+        (inv.note ? '<div class="iv-note">留言：' + esc(inv.note) + '</div>' : '') +
+        (inv.status === 'pending'
+          ? '<div class="iv-actions"><button class="btn btn-ghost" data-inv="' + esc(inv.id) + '" data-act="cancel" style="flex:1;font-size:13px;">撤回邀请</button></div>'
+          : '<div class="iv-state">' + (inv.status === 'accepted' ? nm + ' 已接受 ✓ 记录已加入双方' : nm + ' 未接受，不成立') +
+            (inv.replyNote ? '<br>对方留言：' + esc(inv.replyNote) : '') + '</div>')
+        + '</div>';
+    });
+    h += '<div class="mrow" style="margin-top:14px;"><button class="btn btn-primary" id="invClose" style="flex:1;">关闭</button></div>';
+    box.innerHTML = h;
+    showOverlay();
+    $('invClose').addEventListener('click', hideOverlay);
+    var acts = box.querySelectorAll('[data-act]');
+    for (var i = 0; i < acts.length; i++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          var bid = btn.getAttribute('data-inv');
+          var act = btn.getAttribute('data-act');
+          var ni = box.querySelector('input[data-invn="' + bid + '"]');
+          var nv = ni ? ni.value.trim() : '';
+          if (act === 'accept') respondInvite(bid, true, nv);
+          else if (act === 'decline') respondInvite(bid, false, nv);
+          else if (act === 'cancel') cancelInvite(bid);
+          showInviteCenter();
+          renderInviteBanner();
+        });
+      })(acts[i]);
+    }
+  }
+
   /* ---------- 数据备份 ---------- */
   function exportBackup() {
     var data = {
       app: 'sancansiji', ver: 1, exportedAt: new Date().toISOString(),
       cats: cats, catBgs: catBgs, tags: tags, dishes: dishes, records: records, users: users,
+      customFoods: customFoods, invites: invites,
       soundOn: soundOn, viewMode: viewMode,
       currentUserId: currentUser ? currentUser.id : null
     };
@@ -1612,7 +2695,7 @@
     var box = $('modalBox');
     box.innerHTML =
       '<div class="mtitle" style="font-size:17px;">导出备份</div>' +
-      '<div class="msub">备份包含全部菜品、标签、用户、身体记录、点菜记录与设置。选择导出方式：</div>' +
+      '<div class="msub">备份包含全部菜品、标签、我的食材库、用户、身体记录、点菜记录与设置。选择导出方式：</div>' +
       '<div class="mrow" style="margin-top:14px;"><button class="btn btn-primary" id="expShare" style="flex:1;">分享 / 保存到文件</button></div>' +
       '<div class="mrow"><button class="btn btn-ghost" id="expDl" style="flex:1;">下载到本机</button></div>' +
       '<div class="mrow"><button class="btn btn-ghost" id="expCancel" style="flex:1;">取消</button></div>';
@@ -1653,6 +2736,8 @@
     records = Array.isArray(data.records) ? data.records.slice() : [];
     users = (Array.isArray(data.users) && data.users.length) ? data.users.slice() : [{ id: 'u_default', name: '我', avatar: '', ts: Date.now() }];
     catBgs = (data.catBgs && typeof data.catBgs === 'object') ? data.catBgs : {};
+    customFoods = (data.customFoods && typeof data.customFoods === 'object') ? data.customFoods : {};
+    if (Array.isArray(data.invites)) invites = data.invites; else invites = [];
     if (typeof data.soundOn === 'boolean') soundOn = data.soundOn;
     if (['large', 'medium', 'small', 'list'].indexOf(data.viewMode) >= 0) viewMode = data.viewMode;
     currentUser = users[0];
@@ -1666,6 +2751,35 @@
   }
   $('btnExport').addEventListener('click', exportBackup);
   $('btnImport').addEventListener('click', function () { $('inpImport').click(); });
+  $('switchSync').addEventListener('click', function () {
+    toggleSync(!(syncCfg && syncCfg.on));
+    renderSync();
+  });
+  $('btnSyncSave').addEventListener('click', function () {
+    if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
+    syncCfg.owner = ($('syncOwner').value || '').trim();
+    syncCfg.repo = ($('syncRepo').value || '').trim();
+    syncCfg.token = ($('syncToken').value || '').trim();
+    if (!syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
+      toast('三项都要填写完整');
+      return;
+    }
+    saveSyncCfg();
+    renderSync();
+    toast('同步设置已保存');
+    if (syncCfg.on) setTimeout(autoSync, 400);
+  });
+  $('btnSyncNow').addEventListener('click', function () {
+    if (!syncCfg || !syncCfg.on) { toast('请先开启云端同步'); return; }
+    autoSync();
+  });
+  $('inviteBanner').addEventListener('click', function () {
+    var pend = pendingIncoming();
+    if (pend.length) showInviteCenter();
+  });
+  $('btnInviteCenter').addEventListener('click', function () {
+    showInviteCenter();
+  });
   $('inpImport').addEventListener('change', function () {
     var file = this.files && this.files[0];
     this.value = '';
@@ -1966,7 +3080,7 @@
     $('mineCur').innerHTML =
       av +
       '<div style="flex:1;min-width:0;">' +
-        '<div class="uname">' + esc(cu.name) + '</div>' +
+        '<div class="uname">' + esc(cu.name) + ' <span style="font-size:11px;color:#8A8F98;font-weight:400;">ID ' + shortId(cu.id) + '</span></div>' +
         '<div style="font-size:12px;color:#8A8F98;margin-top:2px;">' + hTxt + ' · 共 ' + curRecords().length + ' 条点菜记录</div>' +
       '</div>' +
       '<button class="mine-edit-btn" id="btnEditProfile">✎ 编辑</button>' +
@@ -1985,7 +3099,10 @@
       var cnt = records.filter(function (r) { return r.uid === u.id; }).length;
       row.innerHTML =
         av2 +
-        '<span class="uname">' + esc(u.name) + '</span>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<span class="uname">' + esc(u.name) + '</span>' +
+          '<div style="font-size:11px;color:#8A8F98;">ID ' + shortId(u.id) + '</div>' +
+        '</div>' +
         '<span style="font-size:11px;color:#8A8F98;white-space:nowrap;">' + cnt + ' 条记录</span>' +
         (u.id === cu.id ? '<span class="utag">使用中</span>' : '');
       attachLongPress(row, function () {
@@ -2114,6 +3231,7 @@
     var box = $('modalBox');
     box.innerHTML =
       '<div class="mtitle" style="font-size:17px;text-align:center;">编辑资料</div>' +
+      '<div style="font-size:11px;color:#8A8F98;margin:4px 0 10px;text-align:center;">我的家庭身份 ID：<b>' + shortId(cu.id) + '</b>（家人靠它认出你）</div>' +
       '<button class="edit-avatar" id="editAvatarBox">' + (cu.avatar ? '<img class="avatar" src="' + cu.avatar + '" alt="">' : '＋') + '</button>' +
       '<div style="font-size:12px;color:#8A8F98;margin-top:8px;text-align:center;">点击更换头像</div>' +
       '<div class="fg"><div class="f"><label>昵称</label><input id="inpEName" maxlength="12" value="' + esc(cu.name) + '"></div></div>' +
@@ -2352,9 +3470,16 @@
 
   /* ---------- 启动 ---------- */
   load();
+  migrateDefaultUser();
+  fillFoodList();
   renderHome();
   updateSoundBtn();
   showView('home');
+  renderSync();
+  renderInviteBanner();
+  checkInviteAlerts();
+  flushQueueToast();
+  if (syncCfg && syncCfg.on) setTimeout(autoSync, 900);
 })();
 </script>
 </body>
