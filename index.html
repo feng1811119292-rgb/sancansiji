@@ -212,6 +212,28 @@
     flex: 1; min-width: 0; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.10);
     border-radius: 12px; padding: 10px; font-size: 14px; color: #1A1B1C;
   }
+  .ing-pick {
+    width: 42px; height: 42px; flex: none; border: 1px solid rgba(224,123,57,0.25);
+    background: #FFF7F0; color: #C2501B; border-radius: 12px; font-size: 16px; line-height: 1;
+  }
+  .ing-pick:active { background: rgba(224,123,57,0.15); }
+  /* 食材选择弹窗 */
+  .picker { display: flex; flex-direction: column; max-height: 72vh; }
+  .picker-h { font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 10px; }
+  .picker-q { margin-bottom: 8px; }
+  .picker-list {
+    flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; background: #FBF9F5;
+  }
+  .picker-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    padding: 13px 14px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer;
+  }
+  .picker-item:active { background: rgba(224,123,57,0.08); }
+  .pi-name { font-size: 15px; color: #1A1B1C; min-width: 0; }
+  .pi-src { font-size: 10px; color: #8A8F98; background: rgba(0,0,0,0.05); border-radius: 8px; padding: 1px 6px; margin-left: 6px; }
+  .pi-kcal { font-size: 12px; color: #8A8F98; flex: none; }
+  .picker-empty { padding: 28px 16px; text-align: center; color: #8A8F98; font-size: 13px; }
   .ing-name.ok { border-color: rgba(224,123,57,0.45); }
   .ing-grams {
     width: 74px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.10);
@@ -796,7 +818,7 @@
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
-  var APP_VERSION = 'v1.2';
+  var APP_VERSION = 'v1.3';
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
   var customFoods = {};
@@ -856,7 +878,105 @@
     '橄榄油': { k: 899, c: 0, p: 0, f: 99.9 }, '芝麻油': { k: 898, c: 0, p: 0, f: 99.7 },
     '黄油': { k: 888, c: 0.5, p: 1.4, f: 98 }, '白砂糖': { k: 400, c: 99.9, p: 0, f: 0 },
     '酱油': { k: 63, c: 10.1, p: 5.6, f: 0.1 }, '醋': { k: 31, c: 4.9, p: 2.1, f: 0.3 },
-    '盐': { k: 0, c: 0, p: 0, f: 0 }, '淀粉': { k: 345, c: 85, p: 0.2, f: 0.1 }
+    '盐': { k: 0, c: 0, p: 0, f: 0 }, '淀粉': { k: 345, c: 85, p: 0.2, f: 0.1 },
+    /* —— 杂粮主食 —— */
+    '糙米': { k: 111, c: 23.5, p: 2.6, f: 1.0 }, '小米': { k: 361, c: 75.1, p: 9.0, f: 3.1 },
+    '黑米': { k: 341, c: 72.2, p: 9.4, f: 2.5 }, '糯米': { k: 350, c: 78.3, p: 7.3, f: 1.0 },
+    '藜麦': { k: 368, c: 64.2, p: 14.1, f: 6.1 }, '燕麦粒': { k: 389, c: 66.9, p: 15.0, f: 6.7 },
+    '高粱米': { k: 351, c: 74.6, p: 10.4, f: 3.1 }, '薏米': { k: 357, c: 71.1, p: 12.8, f: 3.3 },
+    '玉米面': { k: 348, c: 74.2, p: 8.7, f: 1.8 }, '荞麦面(煮)': { k: 106, c: 22.6, p: 3.6, f: 0.7 },
+    '意大利面(煮)': { k: 148, c: 30.9, p: 5.8, f: 0.4 }, '粉丝': { k: 338, c: 84.2, p: 0.8, f: 0.2 },
+    '年糕': { k: 154, c: 34.7, p: 3.3, f: 0.6 }, '汤圆(黑芝麻)': { k: 311, c: 53.4, p: 4.4, f: 8.9 },
+    '粽子': { k: 196, c: 38.6, p: 3.4, f: 3.4 }, '烧麦': { k: 238, c: 30.6, p: 9.2, f: 8.1 },
+    '小笼包': { k: 213, c: 27.1, p: 8.9, f: 7.9 }, '煎饺': { k: 250, c: 26.8, p: 9.6, f: 11.0 },
+    /* —— 畜禽肉 —— */
+    '猪蹄': { k: 260, c: 0.0, p: 22.6, f: 18.8 }, '猪肝': { k: 129, c: 5.0, p: 19.3, f: 3.5 },
+    '猪腰': { k: 96, c: 1.4, p: 15.4, f: 3.2 }, '猪肚': { k: 110, c: 0.3, p: 15.2, f: 5.1 },
+    '猪耳': { k: 173, c: 0.0, p: 18.4, f: 11.1 }, '猪皮': { k: 363, c: 0.0, p: 26.4, f: 22.7 },
+    '牛肉(后腿)': { k: 107, c: 0.5, p: 20.3, f: 2.3 }, '牛腱': { k: 109, c: 0.4, p: 21.5, f: 2.2 },
+    '牛腩': { k: 332, c: 0.0, p: 17.2, f: 28.7 }, '牛舌': { k: 196, c: 0.0, p: 17.0, f: 14.0 },
+    '羊肉(肥瘦)': { k: 203, c: 0.0, p: 19.0, f: 14.1 }, '羊排': { k: 204, c: 0.6, p: 18.5, f: 13.9 },
+    '兔肉': { k: 102, c: 0.9, p: 19.7, f: 2.2 }, '驴肉': { k: 117, c: 0.0, p: 21.5, f: 3.2 },
+    '腊肉': { k: 498, c: 1.8, p: 11.8, f: 48.3 }, '叉烧肉': { k: 279, c: 9.0, p: 15.0, f: 18.0 },
+    '鸡肉': { k: 167, c: 1.4, p: 19.3, f: 9.4 }, '乌鸡': { k: 111, c: 0.4, p: 22.3, f: 2.3 },
+    '鸡爪': { k: 254, c: 2.7, p: 23.9, f: 16.4 }, '鸡胗': { k: 118, c: 0.0, p: 19.2, f: 2.8 },
+    '鸡肝': { k: 121, c: 2.1, p: 16.6, f: 4.8 }, '鹅肉': { k: 251, c: 0.0, p: 17.9, f: 19.9 },
+    '鸽肉': { k: 201, c: 0.7, p: 16.5, f: 14.6 }, '鹌鹑': { k: 110, c: 0.2, p: 20.2, f: 3.1 },
+    '鸡蛋清': { k: 60, c: 3.1, p: 11.6, f: 0.1 }, '鸡蛋黄': { k: 328, c: 3.4, p: 15.2, f: 28.2 },
+    '咸鸭蛋': { k: 190, c: 6.3, p: 12.7, f: 12.7 },
+    /* —— 水产 —— */
+    '鲈鱼': { k: 105, c: 0.0, p: 18.6, f: 3.4 }, '鳕鱼': { k: 88, c: 0.5, p: 20.4, f: 0.5 },
+    '黄花鱼': { k: 97, c: 0.6, p: 17.9, f: 2.6 }, '秋刀鱼': { k: 338, c: 0.0, p: 19.9, f: 27.1 },
+    '鳗鱼': { k: 181, c: 0.8, p: 19.1, f: 10.8 }, '金枪鱼': { k: 189, c: 0.0, p: 24.8, f: 8.8 },
+    '鲢鱼': { k: 104, c: 0.0, p: 17.8, f: 3.6 }, '罗非鱼': { k: 98, c: 0.0, p: 20.2, f: 1.4 },
+    '泥鳅': { k: 96, c: 0.0, p: 17.9, f: 2.0 }, '多宝鱼': { k: 102, c: 0.0, p: 18.5, f: 3.2 },
+    '龙虾': { k: 90, c: 0.5, p: 18.9, f: 1.1 }, '基围虾': { k: 101, c: 3.9, p: 18.2, f: 1.4 },
+    '皮皮虾': { k: 90, c: 0.0, p: 16.9, f: 1.7 }, '海参(干)': { k: 262, c: 5.1, p: 50.2, f: 4.8 },
+    '牡蛎': { k: 73, c: 8.2, p: 5.3, f: 2.1 }, '扇贝': { k: 60, c: 2.6, p: 11.1, f: 0.6 },
+    '田螺': { k: 60, c: 3.6, p: 11.0, f: 0.2 }, '海蜇': { k: 33, c: 3.8, p: 6.0, f: 0.1 },
+    '鱼丸': { k: 107, c: 9.8, p: 10.5, f: 1.3 }, '墨鱼': { k: 83, c: 1.6, p: 15.2, f: 0.9 },
+    /* —— 豆制品 —— */
+    '豆腐皮': { k: 409, c: 18.8, p: 44.6, f: 17.4 }, '素鸡': { k: 194, c: 11.2, p: 17.0, f: 7.2 },
+    '千张': { k: 262, c: 5.5, p: 24.5, f: 16.0 }, '香干': { k: 147, c: 4.8, p: 14.4, f: 7.7 },
+    '油豆腐': { k: 244, c: 9.5, p: 17.0, f: 17.6 }, '腐乳': { k: 133, c: 6.0, p: 12.0, f: 8.1 },
+    '蚕豆': { k: 335, c: 61.5, p: 21.2, f: 1.7 }, '豌豆': { k: 111, c: 21.2, p: 7.4, f: 0.3 },
+    '毛豆': { k: 131, c: 10.5, p: 13.1, f: 5.0 }, '绿豆': { k: 329, c: 62.0, p: 21.6, f: 0.8 },
+    '红豆': { k: 324, c: 63.4, p: 20.2, f: 0.6 }, '鹰嘴豆': { k: 342, c: 58.6, p: 20.5, f: 4.7 },
+    /* —— 蔬菜 —— */
+    '娃娃菜': { k: 13, c: 2.4, p: 1.2, f: 0.1 }, '油麦菜': { k: 15, c: 2.4, p: 1.4, f: 0.4 },
+    '空心菜': { k: 20, c: 3.6, p: 2.2, f: 0.3 }, '苋菜': { k: 25, c: 4.7, p: 2.8, f: 0.4 },
+    '茼蒿': { k: 21, c: 3.9, p: 1.9, f: 0.3 }, '芥蓝': { k: 19, c: 2.6, p: 2.8, f: 0.4 },
+    '菜心': { k: 27, c: 4.3, p: 2.4, f: 0.5 }, '秋葵': { k: 45, c: 7.1, p: 2.0, f: 0.1 },
+    '芦笋': { k: 22, c: 4.9, p: 1.4, f: 0.1 }, '竹笋': { k: 23, c: 3.3, p: 2.6, f: 0.2 },
+    '苦瓜': { k: 22, c: 4.9, p: 1.0, f: 0.1 }, '丝瓜': { k: 20, c: 4.2, p: 1.0, f: 0.2 },
+    '西葫芦': { k: 19, c: 3.8, p: 0.8, f: 0.2 }, '佛手瓜': { k: 18, c: 4.1, p: 1.2, f: 0.1 },
+    '紫甘蓝': { k: 25, c: 5.4, p: 1.4, f: 0.2 }, '卷心菜': { k: 24, c: 4.6, p: 1.5, f: 0.1 },
+    '大葱': { k: 33, c: 6.5, p: 1.3, f: 0.3 }, '小葱': { k: 30, c: 6.0, p: 1.6, f: 0.4 },
+    '姜': { k: 46, c: 10.3, p: 1.3, f: 0.6 }, '大蒜': { k: 128, c: 28.4, p: 4.5, f: 0.2 },
+    '蒜苗': { k: 37, c: 8.0, p: 2.1, f: 0.4 }, '香菜': { k: 33, c: 5.8, p: 1.8, f: 0.4 },
+    '荠菜': { k: 27, c: 4.3, p: 2.9, f: 0.4 }, '红薯叶': { k: 30, c: 5.8, p: 2.9, f: 0.3 },
+    '豌豆苗': { k: 36, c: 4.6, p: 4.0, f: 0.8 }, '豆角': { k: 34, c: 6.7, p: 2.5, f: 0.4 },
+    '四季豆': { k: 31, c: 5.7, p: 2.0, f: 0.4 }, '豇豆': { k: 47, c: 7.1, p: 2.7, f: 0.5 },
+    '扁豆': { k: 37, c: 6.9, p: 2.7, f: 0.2 }, '荷兰豆': { k: 30, c: 4.9, p: 2.5, f: 0.3 },
+    '尖椒': { k: 32, c: 6.4, p: 1.3, f: 0.4 }, '彩椒': { k: 22, c: 4.7, p: 1.0, f: 0.2 },
+    '芋头': { k: 81, c: 18.1, p: 2.2, f: 0.2 }, '马蹄': { k: 61, c: 14.2, p: 1.2, f: 0.2 },
+    '魔芋': { k: 12, c: 3.3, p: 0.2, f: 0.1 }, '凉薯': { k: 61, c: 13.4, p: 0.6, f: 0.1 },
+    /* —— 菌菇 —— */
+    '平菇': { k: 24, c: 4.6, p: 1.9, f: 0.3 }, '杏鲍菇': { k: 35, c: 8.3, p: 1.3, f: 0.1 },
+    '口蘑': { k: 24, c: 3.7, p: 2.7, f: 0.2 }, '白玉菇': { k: 25, c: 4.6, p: 2.1, f: 0.3 },
+    '蟹味菇': { k: 26, c: 5.1, p: 2.0, f: 0.3 }, '猴头菇': { k: 13, c: 2.6, p: 2.0, f: 0.2 },
+    '银耳(干)': { k: 261, c: 67.3, p: 10.0, f: 1.4 }, '竹荪(干)': { k: 215, c: 27.0, p: 20.1, f: 2.5 },
+    /* —— 水果 —— */
+    '桃': { k: 51, c: 12.2, p: 0.9, f: 0.1 }, '李子': { k: 38, c: 8.7, p: 0.7, f: 0.2 },
+    '杏': { k: 38, c: 9.1, p: 0.9, f: 0.1 }, '樱桃': { k: 46, c: 11.1, p: 1.1, f: 0.2 },
+    '猕猴桃': { k: 61, c: 14.5, p: 0.8, f: 0.6 }, '芒果': { k: 60, c: 15.1, p: 0.6, f: 0.2 },
+    '菠萝': { k: 44, c: 10.8, p: 0.5, f: 0.1 }, '火龙果': { k: 55, c: 13.3, p: 1.1, f: 0.2 },
+    '榴莲': { k: 147, c: 28.3, p: 2.6, f: 3.3 }, '荔枝': { k: 71, c: 16.6, p: 0.9, f: 0.2 },
+    '龙眼': { k: 71, c: 16.6, p: 1.2, f: 0.1 }, '柚子': { k: 42, c: 9.5, p: 0.8, f: 0.2 },
+    '柠檬': { k: 37, c: 6.2, p: 1.1, f: 1.2 }, '哈密瓜': { k: 34, c: 7.9, p: 0.5, f: 0.1 },
+    '木瓜': { k: 30, c: 7.0, p: 0.4, f: 0.1 }, '椰子': { k: 241, c: 31.3, p: 4.0, f: 12.1 },
+    '牛油果': { k: 171, c: 7.4, p: 2.0, f: 15.3 }, '蓝莓': { k: 57, c: 14.5, p: 0.7, f: 0.3 },
+    '石榴': { k: 72, c: 18.7, p: 1.4, f: 0.2 }, '柿子': { k: 74, c: 18.5, p: 0.4, f: 0.1 },
+    '山楂': { k: 102, c: 25.1, p: 0.5, f: 0.6 }, '枇杷': { k: 41, c: 9.3, p: 0.8, f: 0.2 },
+    '桑葚': { k: 49, c: 13.8, p: 1.7, f: 0.4 }, '杨梅': { k: 30, c: 6.7, p: 0.8, f: 0.2 },
+    '杨桃': { k: 31, c: 6.5, p: 0.6, f: 0.3 }, '甜瓜': { k: 26, c: 5.8, p: 0.4, f: 0.1 },
+    '冬枣': { k: 113, c: 27.8, p: 1.8, f: 0.2 }, '青枣': { k: 57, c: 14.8, p: 1.2, f: 0.3 },
+    /* —— 坚果种子 —— */
+    '核桃': { k: 646, c: 19.1, p: 14.9, f: 58.8 }, '腰果': { k: 559, c: 41.6, p: 17.3, f: 36.7 },
+    '杏仁': { k: 578, c: 23.9, p: 22.5, f: 45.4 }, '开心果': { k: 614, c: 24.3, p: 20.8, f: 45.4 },
+    '碧根果': { k: 691, c: 18.0, p: 9.2, f: 72.0 }, '榛子': { k: 620, c: 14.7, p: 12.6, f: 58.5 },
+    '松子': { k: 644, c: 20.6, p: 14.1, f: 63.6 }, '瓜子(葵花)': { k: 615, c: 17.3, p: 23.9, f: 53.4 },
+    '西瓜子': { k: 573, c: 10.6, p: 32.7, f: 44.8 }, '南瓜子': { k: 574, c: 7.2, p: 33.2, f: 48.1 },
+    '莲子': { k: 350, c: 67.2, p: 17.2, f: 2.0 }, '板栗': { k: 185, c: 42.2, p: 4.2, f: 0.7 },
+    '枸杞': { k: 258, c: 47.2, p: 13.9, f: 1.5 },
+    /* —— 调味与饮品 —— */
+    '蚝油': { k: 114, c: 21.0, p: 3.8, f: 0.3 }, '豆瓣酱': { k: 178, c: 13.5, p: 9.9, f: 13.4 },
+    '甜面酱': { k: 136, c: 28.0, p: 5.5, f: 0.6 }, '番茄酱': { k: 81, c: 16.9, p: 4.9, f: 0.2 },
+    '蜂蜜': { k: 321, c: 75.6, p: 0.4, f: 1.9 }, '红糖': { k: 389, c: 96.6, p: 0.7, f: 0.0 },
+    '冰糖': { k: 397, c: 99.3, p: 0.0, f: 0.0 }, '料酒': { k: 66, c: 0.6, p: 0.0, f: 0.0 },
+    '脱脂牛奶': { k: 35, c: 5.0, p: 3.4, f: 0.1 }, '可乐': { k: 43, c: 10.8, p: 0.0, f: 0.0 },
+    '橙汁': { k: 45, c: 10.5, p: 0.7, f: 0.2 }, '啤酒': { k: 32, c: 3.5, p: 0.4, f: 0.0 },
+    '白酒': { k: 298, c: 0.0, p: 0.0, f: 0.0 }, '葡萄酒': { k: 74, c: 2.6, p: 0.1, f: 0.0 }
   };
   function calcNutrition(items) {
     var r = { k: 0, c: 0, p: 0, f: 0, unknown: [] };
@@ -1929,6 +2049,7 @@
       var row = document.createElement('div');
       row.className = 'ing-row';
       row.innerHTML =
+        '<button class="ing-pick" type="button">🔍</button>' +
         '<input class="ing-name" list="foodList" placeholder="食材（可搜索）" value="' + esc(it.name) + '" maxlength="12">' +
         '<span class="ing-g-label">克</span>' +
         '<input class="ing-grams" type="number" min="1" step="5" placeholder="克数" value="' + (it.grams || '') + '">' +
@@ -1936,6 +2057,9 @@
       list.appendChild(row);
       var nm = row.querySelector('.ing-name');
       var gm = row.querySelector('.ing-grams');
+      row.querySelector('.ing-pick').addEventListener('click', function () {
+        showFoodPicker(idx);
+      });
       nm.addEventListener('input', function () {
         var v = this.value.trim();
         this.classList.toggle('ok', !!(FOOD_TABLE[v] || customFoods[v]));
@@ -1964,6 +2088,63 @@
     syncDomToItems();
     recipeItems.push({ name: name || '', grams: grams || '' });
     renderIngRows();
+  }
+  /* ---------- 食材选择弹窗（搜索内置库+自定义库） ---------- */
+  var pickerIdx = -1;
+  function showFoodPicker(idx) {
+    pickerIdx = idx;
+    var box = $('modalBox');
+    box.innerHTML =
+      '<div class="picker">' +
+        '<div class="picker-h">选择食材</div>' +
+        '<input class="note-input picker-q" id="pickerQ" placeholder="输入食材名，如：牛肉、猪肝" autocomplete="off">' +
+        '<div class="picker-list" id="pickerList"></div>' +
+        '<div class="mrow" style="margin-top:12px;">' +
+          '<button class="btn btn-ghost" id="pickerCancel" style="flex:1;">取消</button>' +
+        '</div>' +
+      '</div>';
+    showOverlay();
+    function render(q) {
+      var keys = {};
+      for (var k in FOOD_TABLE) keys[k] = 1;
+      for (var c in customFoods) keys[c] = 1;
+      var names = [];
+      for (var n in keys) names.push(n);
+      names.sort();
+      if (q) names = names.filter(function (x) { return x.indexOf(q) !== -1; });
+      var h = '';
+      names.forEach(function (n) {
+        var f = FOOD_TABLE[n] || customFoods[n];
+        if (!f) return;
+        var src = FOOD_TABLE[n] ? '' : '自定义';
+        h += '<div class="picker-item" data-name="' + esc(n) + '">' +
+          '<div class="pi-name">' + esc(n) + (src ? '<span class="pi-src">' + src + '</span>' : '') + '</div>' +
+          '<div class="pi-kcal">' + Math.round(f.k) + ' 千卡/100g</div>' +
+        '</div>';
+      });
+      if (!h) {
+        h = '<div class="picker-empty">没有找到「' + esc(q) + '」，可直接手动输入名称，或到「我的食材库」添加</div>';
+      }
+      $('pickerList').innerHTML = h;
+    }
+    render('');
+    $('pickerQ').addEventListener('input', function () { render(this.value.trim()); });
+    $('pickerCancel').addEventListener('click', hideOverlay);
+    $('pickerList').addEventListener('click', function (e) {
+      var el = e.target;
+      while (el && el !== this && !(el.classList && el.classList.contains('picker-item'))) el = el.parentNode;
+      if (!el || el === this) return;
+      var nm = el.getAttribute('data-name');
+      var rows = $('ingList').querySelectorAll('.ing-row');
+      if (rows[pickerIdx]) {
+        var nmInput = rows[pickerIdx].querySelector('.ing-name');
+        nmInput.value = nm;
+        nmInput.classList.add('ok');
+        updateNutri();
+        sfxClick();
+      }
+      hideOverlay();
+    });
   }
   /* ---------- 我的食材库（自定义食材） ---------- */
   function showCustomFoods() {
