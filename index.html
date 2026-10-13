@@ -573,6 +573,18 @@
     transition: opacity 0.25s; max-width: 82%; text-align: center;
   }
   #toast.show { opacity: 1; }
+
+  /* 下拉刷新提示 */
+  #pullHint {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 55; text-align: center;
+    font-size: 12px; color: #6B7280; padding: 10px 0 26px; pointer-events: none;
+    transform: translateY(-100%); transition: transform 0.25s ease;
+  }
+  #pullHint .ph-inner {
+    display: inline-block; background: rgba(255,255,255,0.96); border-radius: 999px;
+    padding: 7px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.10); border: 1px solid rgba(0,0,0,0.05);
+  }
+  #pullHint.pull-hold { transition: none; }
 </style>
 </head>
 <body>
@@ -760,6 +772,7 @@
 </div>
 
 <input type="file" id="fileInput" accept="image/*" hidden>
+<div id="pullHint"><div class="ph-inner" id="pullText">下拉刷新</div></div>
 <div id="toast"></div>
 <div id="overlay"><div class="modal" id="modalBox"></div></div>
 
@@ -783,7 +796,7 @@
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
-  var APP_VERSION = 'v1.1';
+  var APP_VERSION = 'v1.2';
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
   var customFoods = {};
@@ -3505,6 +3518,45 @@
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { t.classList.remove('show'); }, 1800);
   }
+
+  /* ---------- 下拉刷新（首页顶部） ---------- */
+  var prY0 = 0, prDy = 0, prOn = false;
+  var prHint = $('pullHint'), prText = $('pullText');
+  function prReset() {
+    prOn = false; prDy = 0;
+    prHint.classList.remove('pull-hold');
+    prHint.style.transform = 'translateY(-100%)';
+  }
+  function prDoRefresh() {
+    prText.textContent = '刷新中…';
+    prHint.style.transform = 'translateY(0)';
+    setTimeout(function () {
+      try { location.replace(location.pathname + '?r=' + Date.now()); }
+      catch (e) { location.reload(); }
+    }, 350);
+  }
+  document.addEventListener('touchstart', function (e) {
+    var h = $('view-home');
+    if (!h || !h.classList.contains('active')) { prOn = false; return; }
+    if (window.scrollY > 0) { prOn = false; return; }
+    prY0 = e.touches[0].clientY; prDy = 0; prOn = true;
+  }, { passive: true });
+  document.addEventListener('touchmove', function (e) {
+    if (!prOn) return;
+    var dy = e.touches[0].clientY - prY0;
+    if (dy <= 0) { prReset(); return; }
+    prDy = dy;
+    var y = Math.min(88, dy * 0.35);
+    prHint.classList.add('pull-hold');
+    prHint.style.transform = 'translateY(' + (y - 100) + '%)';
+    prText.textContent = dy > 70 ? '松开刷新' : '下拉刷新';
+  }, { passive: true });
+  document.addEventListener('touchend', function () {
+    if (!prOn) return;
+    if (prDy > 70) { prDoRefresh(); }
+    else prReset();
+  }, { passive: true });
+  document.addEventListener('touchcancel', prReset, { passive: true });
 
   /* ---------- 启动 ---------- */
   load();
