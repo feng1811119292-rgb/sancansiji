@@ -376,6 +376,7 @@
   .urow .avatar, .urow .avatar-ph { width: 40px; height: 40px; border-radius: 50%; font-size: 16px; }
   .urow .uname { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; }
   .urow .utag { font-size: 11px; font-weight: 600; color: #E07B39; background: rgba(224,123,57,0.10); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  .urow .utag.utag-cloud { color: #6B7280; background: rgba(107,114,128,0.10); }
   .mine-new { display: flex; gap: 10px; align-items: center; }
   .fab {
     position: fixed; right: 20px; bottom: calc(100px + env(safe-area-inset-bottom)); z-index: 20;
@@ -818,7 +819,7 @@
   var CAT_COLORS = { '碳水类': '#E8A33D', '蛋白类': '#5B8DEF', '蔬菜类': '#52A76B', '汤羹类': '#9A7BC8', '其他': '#8A8F98' };
   var ACCENT = '#E07B39';
 
-  var APP_VERSION = 'v1.3';
+  var APP_VERSION = 'v1.5';
   var cats = [], tags = [], dishes = [], records = [], users = [], currentUser = null, viewMode = 'medium', soundOn = true, editDishId = null;
   var catBgs = {};
   var customFoods = {};
@@ -1036,6 +1037,12 @@
       if (users[ui].id === cuId) { currentUser = users[ui]; break; }
     }
     if (!currentUser) currentUser = users[0];
+    if (currentUser && currentUser.local === false) {
+      for (var ui2 = 0; ui2 < users.length; ui2++) {
+        if (users[ui2].local !== false) { currentUser = users[ui2]; break; }
+      }
+      try { localStorage.setItem(CURRENTUSER_KEY, currentUser.id); } catch (e) {}
+    }
     records.forEach(function (r) {
       if (!r.uid) r.uid = 'u_default';
       if (r.note === undefined) r.note = '';
@@ -1048,6 +1055,7 @@
       if (!Array.isArray(u.measures)) u.measures = [];
       if (u.height === undefined) u.height = null;
       if (u.allowShare === undefined) u.allowShare = true;
+      if (u.local === undefined) u.local = true;
     });
     var vm = null;
     try { vm = localStorage.getItem(VIEWMODE_KEY); } catch (e) { vm = null; }
@@ -2543,7 +2551,8 @@
         id: cu.id, name: cu.name || lu.name || '成员',
         avatar: cu.avatar || lu.avatar || '', ts: cu.ts || Date.now(),
         measures: lu.measures || [], height: lu.height,
-        allowShare: lu.allowShare !== undefined ? lu.allowShare : true
+        allowShare: lu.allowShare !== undefined ? lu.allowShare : true,
+        local: lu.local !== undefined ? lu.local : false
       };
     });
     var merged = [];
@@ -2907,7 +2916,8 @@
     tags = Array.isArray(data.tags) ? data.tags.slice() : [];
     dishes = Array.isArray(data.dishes) ? data.dishes.slice() : [];
     records = Array.isArray(data.records) ? data.records.slice() : [];
-    users = (Array.isArray(data.users) && data.users.length) ? data.users.slice() : [{ id: 'u_default', name: '我', avatar: '', ts: Date.now() }];
+    users = (Array.isArray(data.users) && data.users.length) ? data.users.slice() : [{ id: 'u_default', name: '我', avatar: '', ts: Date.now(), local: true }];
+    users.forEach(function (u) { u.local = true; });
     catBgs = (data.catBgs && typeof data.catBgs === 'object') ? data.catBgs : {};
     customFoods = (data.customFoods && typeof data.customFoods === 'object') ? data.customFoods : {};
     if (Array.isArray(data.invites)) invites = data.invites; else invites = [];
@@ -3249,6 +3259,8 @@
         ? '<img class="avatar" src="' + u.avatar + '" alt="">'
         : '<span class="avatar-ph">' + esc(u.name.slice(0, 1)) + '</span>';
       var cnt = records.filter(function (r) { return r.uid === u.id; }).length;
+      var tag = u.id === cu.id ? '<span class="utag">使用中</span>'
+        : (u.local === false ? '<span class="utag utag-cloud">云端</span>' : '');
       row.innerHTML =
         av2 +
         '<div style="flex:1;min-width:0;">' +
@@ -3256,7 +3268,7 @@
           '<div style="font-size:11px;color:#8A8F98;">ID ' + shortId(u.id) + '</div>' +
         '</div>' +
         '<span style="font-size:11px;color:#8A8F98;white-space:nowrap;">' + cnt + ' 条记录</span>' +
-        (u.id === cu.id ? '<span class="utag">使用中</span>' : '');
+        tag;
       attachLongPress(row, function () {
         row._long = true;
         askDeleteUser(u);
@@ -3264,6 +3276,11 @@
       row.addEventListener('click', function () {
         if (row._long) { row._long = false; return; }
         if (u.id === currentUser.id) return;
+        if (u.local === false) {
+          sfxDelete();
+          toast('这是「' + u.name + '」的云端账户，请用 TA 自己的手机操作');
+          return;
+        }
         currentUser = u;
         try { localStorage.setItem(CURRENTUSER_KEY, currentUser.id); } catch (e) {}
         sfxClick();
@@ -3354,6 +3371,7 @@
     renderInviteBanner();
   }
   function askDeleteUser(u) {
+    if (u.local === false) { sfxDelete(); toast('这是家人的云端账户，不能删除'); return; }
     if (users.length <= 1) { toast('至少保留一个用户'); return; }
     var n = records.filter(function (r) { return r.uid === u.id; }).length;
     showConfirm('删除用户「' + u.name + '」？' + (n ? '该用户的 ' + n + ' 条点菜记录也会一起删除。' : ''), function () {
@@ -3397,7 +3415,7 @@
       for (var i = 0; i < users.length; i++) {
         if (users[i].name === nm) { toast('这个名字已存在'); return; }
       }
-      var u = { id: uid(), name: nm, avatar: newAvatar || '', ts: Date.now() };
+      var u = { id: uid(), name: nm, avatar: newAvatar || '', ts: Date.now(), local: true };
       users.push(u);
       currentUser = u;
       try { localStorage.setItem(CURRENTUSER_KEY, u.id); } catch (e) {}
@@ -3751,6 +3769,11 @@
   checkInviteAlerts();
   flushQueueToast();
   if (syncCfg && syncCfg.on) setTimeout(autoSync, 900);
+  /* 云端定时轮询：每 30 秒自动同步一次（拉取家人更新 + 上传本机改动），
+     即使没有任何手动操作，家人新点菜/新邀请也能在 30 秒内自动收到 */
+  setInterval(function () {
+    if (syncCfg && syncCfg.on && !syncBusy) autoSync();
+  }, 30000);
 })();
 </script>
 </body>
