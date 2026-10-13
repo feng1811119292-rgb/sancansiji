@@ -343,6 +343,10 @@
   .mine-cur .avatar, .mine-cur .avatar-ph { width: 56px; height: 56px; border-radius: 50%; font-size: 22px; }
   .mine-cur .uname { font-size: 17px; font-weight: 700; }
   .mine-cur .utag { font-size: 12px; font-weight: 600; color: #E07B39; background: rgba(224,123,57,0.10); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  .st-sec { font-size: 12px; color: #8A8F98; margin: 18px 0 8px; text-align: left; }
+  .pill-row { display: flex; gap: 10px; margin: 2px 0 16px; }
+  .pill-btn { flex: 1; padding: 11px 0; border-radius: 999px; border: 1px solid rgba(224,123,57,0.35); background: rgba(224,123,57,0.08); color: #C2501B; font-size: 14px; font-weight: 600; text-align: center; -webkit-tap-highlight-color: transparent; }
+  .pill-btn:active { background: rgba(224,123,57,0.18); }
   .mine-sec { font-size: 13px; color: #8A8F98; margin: 18px 2px 8px; font-weight: 600; }
   .urow { display: flex; align-items: center; gap: 12px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; padding: 12px 74px 12px 12px; margin-bottom: 10px; }
   .urow.on { border-color: rgba(224,123,57,0.45); background: rgba(224,123,57,0.04); }
@@ -721,45 +725,13 @@
     <div class="mine-cur" id="mineCur"></div>
     <div class="mine-sec">身体数据</div>
     <div class="m-body" id="mBody"></div>
-    <div class="mine-sec">用户列表 · 点击切换 · 长按删除</div>
+    <div class="mine-sec">用户列表</div>
     <div style="font-size:11px;color:#8A8F98;margin:-6px 0 8px;">开启云端同步后，家人的成员会自动出现在这里</div>
     <div id="userList"></div>
     <div class="mine-sec">设置</div>
-    <div class="priv-card">
-      <div class="priv-row">
-        <div class="priv-txt">
-          <div class="priv-name">允许其他人查看我的点菜记录</div>
-          <div class="priv-sub">关闭后，其他用户无法筛选查看你的记录；你自己永远可以查看全部记录</div>
-        </div>
-        <button class="switch" id="switchShare" role="switch"></button>
-      </div>
-    </div>
-    <div class="backup-card">
-      <button class="btn btn-primary" id="btnExport" style="flex:1;">导出全部备份</button>
-      <button class="btn btn-ghost" id="btnImport" style="flex:1;">导入备份文件</button>
-    </div>
-    <div class="mine-sec">云端同步</div>
-    <div class="sync-card">
-      <div class="priv-row">
-        <div class="priv-txt">
-          <div class="priv-name">开启云端同步</div>
-          <div class="priv-sub">家人之间共享菜品、点菜记录和邀请；身体数据不上云</div>
-        </div>
-        <button class="switch" id="switchSync" role="switch"></button>
-      </div>
-      <div class="sync-fields" id="syncFields" style="display:none;">
-        <input class="note-input" id="syncOwner" placeholder="GitHub 用户名" autocomplete="off" style="margin-top:10px;">
-        <input class="note-input" id="syncRepo" placeholder="仓库名（如 sancansiji-sync）" autocomplete="off">
-        <input class="note-input" id="syncToken" type="password" placeholder="访问令牌（Token）" autocomplete="off">
-        <div class="mrow" style="margin-top:10px;">
-          <button class="btn btn-ghost" id="btnSyncSave" style="flex:1;">保存</button>
-          <button class="btn btn-primary" id="btnSyncNow" style="flex:1;">立即同步</button>
-        </div>
-        <div class="sync-status" id="syncStatus">尚未配置</div>
-      </div>
-    </div>
-    <div class="backup-card" style="margin-top:10px;">
-      <button class="btn btn-ghost" id="btnInviteCenter" style="flex:1;">查看点菜邀请</button>
+    <div class="pill-row">
+      <button class="pill-btn" id="btnSettings">⚙ 设置</button>
+      <button class="pill-btn" id="btnInviteCenter">📩 点菜邀请</button>
     </div>
     <button class="fab" id="btnNewUser">＋<br><span class="fab-t">新建用户</span></button>
   </div>
@@ -2245,13 +2217,6 @@
     renderRecords();
     toast('已重置筛选');
   });
-  $('switchShare').addEventListener('click', function () {
-    if (!currentUser) return;
-    currentUser.allowShare = (currentUser.allowShare !== false) ? false : true;
-    persist(); sfxClick();
-    toast(currentUser.allowShare ? '已开启：其他人可以查看你的记录' : '已关闭：其他人无法查看你的记录');
-    renderMine();
-  });
 
   /* ---------- 云端同步（GitHub 私有仓库） ---------- */
   function saveSyncCfg() {
@@ -2287,23 +2252,21 @@
     if (on) {
       if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
       if (!syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
-        if (!$('syncFields') || $('syncFields').style.display !== 'block') {
-          if ($('syncFields')) $('syncFields').style.display = 'block';
-        }
+        if ($('syncFields')) $('syncFields').style.display = 'block';
         toast('请先填写 GitHub 用户名、仓库名和令牌');
-        return;
+        return false;
       }
       syncCfg.on = true;
       syncCfg.dirty = true;
       syncCfg.conflict = false;
       saveSyncCfg();
-      renderSync();
       toast('云端同步已开启');
       setTimeout(autoSync, 600);
+      return true;
     } else {
       if (syncCfg) { syncCfg.on = false; saveSyncCfg(); }
-      renderSync();
       toast('云端同步已关闭');
+      return true;
     }
   }
   function b64Encode(str) {
@@ -2615,7 +2578,7 @@
     var ib = $('btnInviteCenter');
     if (ib) {
       var n = pendingIncoming().length;
-      ib.textContent = n ? '查看点菜邀请（收到 ' + n + ' 条）' : '查看点菜邀请';
+      ib.textContent = n ? '📩 点菜邀请（' + n + '）' : '📩 点菜邀请';
     }
   }
   function showInviteCenter() {
@@ -2749,34 +2712,11 @@
     persist();
     location.reload();
   }
-  $('btnExport').addEventListener('click', exportBackup);
-  $('btnImport').addEventListener('click', function () { $('inpImport').click(); });
-  $('switchSync').addEventListener('click', function () {
-    toggleSync(!(syncCfg && syncCfg.on));
-    renderSync();
-  });
-  $('btnSyncSave').addEventListener('click', function () {
-    if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
-    syncCfg.owner = ($('syncOwner').value || '').trim();
-    syncCfg.repo = ($('syncRepo').value || '').trim();
-    syncCfg.token = ($('syncToken').value || '').trim();
-    if (!syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
-      toast('三项都要填写完整');
-      return;
-    }
-    saveSyncCfg();
-    renderSync();
-    toast('同步设置已保存');
-    if (syncCfg.on) setTimeout(autoSync, 400);
-  });
-  $('btnSyncNow').addEventListener('click', function () {
-    if (!syncCfg || !syncCfg.on) { toast('请先开启云端同步'); return; }
-    autoSync();
-  });
   $('inviteBanner').addEventListener('click', function () {
     var pend = pendingIncoming();
     if (pend.length) showInviteCenter();
   });
+  $('btnSettings').addEventListener('click', showSettingsModal);
   $('btnInviteCenter').addEventListener('click', function () {
     showInviteCenter();
   });
@@ -3120,6 +3060,78 @@
       });
       wrap.appendChild(row);
     });
+  }
+  function showSettingsModal() {
+    var box = $('modalBox');
+    var shareOn = !!(currentUser && currentUser.allowShare !== false);
+    var syncOn = !!(syncCfg && syncCfg.on);
+    box.innerHTML =
+      '<div class="mtitle" style="font-size:17px;text-align:center;">设置</div>' +
+      '<div class="st-sec">隐私</div>' +
+      '<div class="priv-card"><div class="priv-row">' +
+        '<div class="priv-txt"><div class="priv-name">允许其他人查看我的点菜记录</div>' +
+        '<div class="priv-sub">关闭后，家人无法筛选查看你的记录；你自己永远可以查看全部</div></div>' +
+        '<span class="switch' + (shareOn ? ' on' : '') + '" id="switchShare" role="switch"></span>' +
+      '</div></div>' +
+      '<div class="st-sec">云端同步</div>' +
+      '<div class="priv-card"><div class="priv-row">' +
+        '<div class="priv-txt"><div class="priv-name">开启云端同步</div>' +
+        '<div class="priv-sub">家人之间共享菜品、点菜记录和邀请；身体数据不上云</div></div>' +
+        '<span class="switch' + (syncOn ? ' on' : '') + '" id="switchSync" role="switch"></span>' +
+      '</div></div>' +
+      '<div class="sync-fields" id="syncFields" style="' + (syncOn ? '' : 'display:none;') + '">' +
+        '<input class="note-input" id="syncOwner" placeholder="GitHub 用户名" autocomplete="off" style="margin-top:10px;">' +
+        '<input class="note-input" id="syncRepo" placeholder="仓库名（如 sancansiji-sync）" autocomplete="off">' +
+        '<input class="note-input" id="syncToken" type="password" placeholder="访问令牌（Token）" autocomplete="off">' +
+        '<div class="mrow" style="margin-top:10px;">' +
+          '<button class="btn btn-ghost" id="btnSyncSave" style="flex:1;">保存</button>' +
+          '<button class="btn btn-primary" id="btnSyncNow" style="flex:1;">立即同步</button>' +
+        '</div>' +
+        '<div class="sync-status" id="syncStatus">尚未配置</div>' +
+      '</div>' +
+      '<div class="st-sec">数据备份</div>' +
+      '<div class="backup-card">' +
+        '<button class="btn btn-primary" id="btnExport" style="flex:1;">导出全部备份</button>' +
+        '<button class="btn btn-ghost" id="btnImport" style="flex:1;">导入备份文件</button>' +
+      '</div>' +
+      '<div class="mrow" style="margin-top:16px;">' +
+        '<button class="btn btn-ghost" id="stClose" style="flex:1;">关闭</button>' +
+      '</div>';
+    showOverlay();
+    $('stClose').addEventListener('click', hideOverlay);
+    $('switchShare').addEventListener('click', function () {
+      if (!currentUser) return;
+      currentUser.allowShare = (currentUser.allowShare !== false) ? false : true;
+      persist(); sfxClick();
+      this.classList.toggle('on', currentUser.allowShare !== false);
+      toast(currentUser.allowShare ? '已开启：其他人可以查看你的记录' : '已关闭：其他人无法查看你的记录');
+    });
+    $('switchSync').addEventListener('click', function () {
+      if (toggleSync(!(syncCfg && syncCfg.on))) renderSync();
+    });
+    $('btnSyncSave').addEventListener('click', function () {
+      if (!syncCfg) syncCfg = { on: false, owner: '', repo: '', token: '', lastPush: 0, dirty: false, conflict: false };
+      syncCfg.owner = ($('syncOwner').value || '').trim();
+      syncCfg.repo = ($('syncRepo').value || '').trim();
+      syncCfg.token = ($('syncToken').value || '').trim();
+      if (!syncCfg.owner || !syncCfg.repo || !syncCfg.token) {
+        toast('三项都要填写完整');
+        return;
+      }
+      saveSyncCfg();
+      var st = $('syncStatus');
+      if (st) st.textContent = '已保存，点击开关即可开启同步';
+      toast('同步设置已保存');
+      if (syncCfg.on) setTimeout(autoSync, 400);
+    });
+    $('btnSyncNow').addEventListener('click', function () {
+      if (!syncCfg || !syncCfg.on) { toast('请先开启云端同步'); return; }
+      autoSync();
+    });
+    $('btnExport').addEventListener('click', exportBackup);
+    $('btnImport').addEventListener('click', function () { $('inpImport').click(); });
+    renderSync();
+    renderInviteBanner();
   }
   function askDeleteUser(u) {
     if (users.length <= 1) { toast('至少保留一个用户'); return; }
